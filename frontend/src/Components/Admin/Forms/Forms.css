@@ -1,0 +1,128 @@
+
+
+form{
+    width: 100%!important;
+    margin-top: 5vh;
+}
+
+.form-control{
+    background-color: #2b2c40!important;
+    color: #999aab!important;
+}
+.form-control:hover{
+    border-color: #696CFF!important;
+}
+
+.my-button{
+    background-color: #696CFF!important;
+}
+.my-button:hover{
+    background-color: #5b5ef2!important;
+}
+
+.form-label{
+    font-size: large;
+}
+.invalid-feedback{
+    font-size: large!important;
+}
+.valid-feedback{
+    font-size: large!important;
+}
+
+.containers{
+    text-align: start!important;
+}
+
+.Form-Container{
+    display: flex;
+    flex-direction: column;
+    align-items: center!important;
+    width: 100%;
+}     
+
+.input-form{
+    width: 45%;
+    margin-left: 1vw;
+    text-align: start!important;
+    height: 1vh;
+    
+}
+
+@media only screen and (max-width: 768px) {
+    .input-form{
+        width: -webkit-fill-available;
+        margin-left: 1vw;
+        text-align: start!important;
+        height: 1vh;
+        
+    }
+}
+
+
+.input-form:hover{
+    border-color: #696CFF!important;
+}
+
+.input-form::after{
+    border-color: #696CFF!important;
+}
+
+.lable-form{
+    margin-left: 1vw;
+    text-align: end!important;
+    padding-top: 1.5vh;
+    width: 6%;
+    color: #999aab;
+}
+
+@media only screen and (max-width: 768px) {
+    .lable-form{
+        text-align: start!important;
+        width: 50%;
+        margin-left: 1vw;
+        padding-top: 1.5vh;
+        color: #999aab;
+    }
+}
+
+.lable-input{
+    display: flex;
+    margin-top: 1.5vw;
+    margin-bottom: 1.5vw;
+    width: 100%;
+    font-size: medium;
+   
+}
+@media only screen and (max-width: 768px) {
+    .lable-input{
+        flex-direction: column;
+        display: flex;
+        margin-top: 1.5vw;
+        margin-bottom: 1.5vw;
+        width: 100%;
+        font-size: medium;
+    }}
+
+.btn-user-add{
+    margin-top: 1.5vh;
+    margin-left: 15vw;
+    margin-right: 15vw;
+}
+@media only screen and (max-width: 768px) {
+    .btn-user-add{
+    width: -webkit-fill-available;
+    margin-top: 1.5vh;
+    margin-left: none;
+    margin-right: none;
+}}
+
+.destination-select{
+    width: 100%;
+    height: 4vh;
+    background-color: #2b2c4000;
+    color: #9999ab;
+    font-size: large;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+}

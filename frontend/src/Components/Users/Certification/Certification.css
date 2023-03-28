@@ -1,0 +1,96 @@
+.certificate-section{
+    background: #006f6b;
+    color: #fff;
+    margin: 4.5rem 0;
+}
+
+.certificate-container{
+    max-width: 1300px;
+    padding: 3rem 0 0;
+    margin: 0 auto;
+    text-align: center;
+}
+
+@media (min-width: 1244px){
+.certificate-container {
+    padding: 3rem;
+}
+}
+
+@media (min-width: 992px){
+.certificate-container {
+    text-align: left;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1.25rem;
+    gap: 1.25rem;
+    padding: 3rem 1.25rem;
+}
+}
+
+.certificate-heading{
+    font-size: large;
+    font-weight: bold;
+    color: #eff4e2;
+    margin-bottom: 1.5rem;
+}
+.certificate-para{
+    font-weight: 500;
+    font-size: small;
+    line-height: 1.5;
+    width: 32ch;
+    max-width: 100%;
+    margin: 0 auto 2.5rem;
+}
+
+@media (min-width: 992px){
+.certificate-para{
+    font-size: medium;
+    margin: 0 0 4rem;
+    line-height: 1.4;
+    width: auto;
+    max-width: 42ch;
+}
+}
+
+.certificate-image-container{
+    background-image: url(https://withlocals-com-res.cloudinary.com/image/upload/w_480,h_240,c_fill,g_south_west,q_auto,dpr_2.0,f_auto/sustainability/Water-Trees-Image-Without-Gradient);
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 1rem;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    width: 480px;
+    min-height: 240px;
+    max-width: calc(100% - 2.5rem);
+    margin: 0 auto;
+    position: relative;
+    bottom: -2.5rem;
+    content-visibility: auto;
+    contain-intrinsic-size: 240px;
+}
+
+@media (min-width: 992px){
+.certificate-image-container{
+    background-image: url(https://withlocals-com-res.cloudinary.com/image/upload/w_592,h_388,c_fill,g_south_west,q_auto,dpr_2.0,f_auto/sustainability/Water-Trees-Image-Without-Gradient);
+    margin-top: -5rem;
+    margin-bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    bottom: 0;
+    contain-intrinsic-size: 388px;
+}
+}
+
+.certificate-image{
+    width: 90px;
+    height: 152px;
+}
+
+@media (min-width: 992px){
+.certificate-image {
+    width: 120px;
+    height: 202px;
+}
+}

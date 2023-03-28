@@ -1,0 +1,144 @@
+.h2-guide {
+    color: #fff;
+    font-weight: 900!important;
+ 
+    position: absolute;
+   top: 80%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   z-index: 1;
+   font-size: 2.5rem!important;
+   transition: transform 5s ease-out;
+   }
+
+   .h3-guide {
+    color: #fff;
+    font-weight: 700!important;
+ 
+    position: absolute;
+   top: 68%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   z-index: 1;
+   font-size: 1rem!important;
+   transition: transform 5s ease-out;
+   }
+ 
+
+   
+   .guide-card .product--image {
+     width: 100%;
+     height: 25em;
+     object-fit: cover;
+     border-top-left-radius: 1.25rem;
+     border-top-right-radius: 1.25rem;
+     position: relative;
+     transition: transform 0.2s ease-out;
+     
+   }
+  
+   .guide-card {
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+     max-width: 300px;
+     margin: auto 1rem;
+     text-align: center;
+     font-family: arial;
+     margin-bottom: 10vh;
+     border-radius: 1.25rem;
+     cursor: pointer;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     position: relative;
+     overflow: hidden;
+     transition: transform 1s ease-out;
+   }
+
+   .guide-card:hover{
+    margin-top: 7px;
+   }
+   
+   .image-overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.4);
+    z-index: 1;
+   }
+   .price {
+     color: grey;
+     font-size: 22px;
+   }
+   
+   .guide-card button {
+     border: none;
+     outline: 0;
+     padding: 12px;
+     color: white;
+     background-color: #000;
+     text-align: center;
+     cursor: pointer;
+     width: 100%;
+     font-size: 18px;
+   }
+   
+ 
+   .react-multiple-carousel__arrow{
+     width: 0!important;
+   }
+ 
+   .carousel{
+     margin-left: 7vw;
+     margin-right: 3vw;
+   }
+ 
+   .react-multi-carousel-dot-list {
+     display: none;
+   }
+ 
+   .react-multiple-carousel__arrow--left {
+     left: calc(0% + 1px);
+ }
+ 
+ .react-multiple-carousel__arrow--right {
+     right: calc(0% + 1px);
+ }
+ 
+ .card-button{
+   background-color:#AA0D57!important ;
+   border-radius: 50%;
+   width: 50%!important;
+ }
+ 
+ .description{
+   margin-top: 22px;
+   transition: transform 0.2s ease-out;
+ }
+ 
+ .carousel-heading{
+   font-weight:700;
+   font-size:2rem;
+   margin-bottom:10px;
+   color:#4a4a4a
+ }
+ 
+ .carousel-subheading{
+   font-weight:600;
+   font-size:1rem;
+   margin-bottom:20px;
+   color:#4a4a4a
+ }
+ 
+ @media only screen and (max-width: 600px) {
+   .carousel-heading {
+       font-size: 1.5rem;
+   }
+ 
+   .carousel-subheading{
+     font-size: .8rem;
+   }
+ }
+ 
+ 

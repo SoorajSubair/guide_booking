@@ -1,0 +1,148 @@
+.h2 {
+   color: #fff;
+   font-weight: 900!important;
+
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  font-size: 2.5rem!important;
+  transition: transform 5s ease-out;
+  }
+
+  /* .h2:hover{
+    top: 50%;
+  } */
+  
+  .destination-card .product--image {
+    width: 100%;
+    height: 25em;
+    object-fit: cover;
+    border-top-left-radius: 1.25rem;
+    border-top-right-radius: 1.25rem;
+    position: relative;
+    transition: transform 0.2s ease-out;
+    
+  }
+
+  /* .destination-card .product--image:hover {
+    transform: scale(1.1);
+  } */
+
+  /* .destination-card .product--image:hover + .h2 {
+    top: 50%;
+  } */
+
+  .destination-card .product--image::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* set the background color to a dark shade */
+    z-index: 1;
+  }
+  
+  
+  .destination-card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 370px;
+    margin: auto 1rem;
+    text-align: center;
+    font-family: arial;
+    margin-bottom: 10vh;
+    border-radius: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    height: 570px;
+  }
+  
+  .price {
+    color: grey;
+    font-size: 22px;
+  }
+  
+  .destination-card button {
+    border: none;
+    outline: 0;
+    padding: 12px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+  }
+  
+  .destination-card button:hover {
+    opacity: 0.7;
+  }
+
+  .react-multiple-carousel__arrow{
+    width: 0!important;
+  }
+
+  .carousel{
+    margin-left: 7vw;
+    margin-right: 3vw;
+  }
+
+  .react-multi-carousel-dot-list {
+    display: none;
+  }
+
+  .react-multiple-carousel__arrow--left {
+    left: calc(0% + 1px);
+}
+
+.react-multiple-carousel__arrow--right {
+    right: calc(0% + 1px);
+}
+
+.card-button{
+  background-color:#AA0D57!important ;
+  border-radius: 50%;
+  width: 50%!important;
+}
+
+.allDestination-description{
+  margin-top: 22px;
+  transition: transform 0.2s ease-out;
+  font-weight: 600;
+}
+
+.carousel-heading{
+  font-weight:700;
+  font-size:2rem;
+  margin-bottom:10px;
+  color:#4a4a4a
+}
+
+.carousel-subheading{
+  font-weight:600;
+  font-size:1rem;
+  margin-bottom:20px;
+  color:#4a4a4a
+}
+
+@media only screen and (max-width: 600px) {
+  .carousel-heading {
+      font-size: 1.5rem;
+  }
+
+  .carousel-subheading{
+    font-size: .8rem;
+  }
+}
+
+.react-multi-carousel-item:hover{
+  margin-top: 10px;
+  transform: scale(0.95);
+  
+}

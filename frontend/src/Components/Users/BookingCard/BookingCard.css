@@ -1,0 +1,78 @@
+.book-block-container-fixed{
+    position: fixed;
+    top: 0;
+    z-index: 3;
+    padding-top: 1.5rem;
+}
+
+.book-block-container{
+    position: absolute;
+    z-index: 600;
+    min-width: 350px;
+    max-width: 350px;
+    top: 0;
+    padding-top: 4rem;
+    margin-left: 1rem;
+}
+
+.book-block{
+    padding: 2rem 1.5rem;
+    border-radius: 0.5rem;
+    min-width: 350px;
+    background: #fff;
+    box-shadow: 0 7px 33px 0 hsl(0deg 0% 78% / 50%);
+}
+
+.book-price{
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.price-detail{
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    color: #4a4a4a;
+}
+
+.date-selector{
+    position: relative;
+}
+
+.date-selector-button{
+    width: 100%;
+    line-height: calc(2.5rem - 2px);
+    padding: 0 1rem 0 0.5rem;
+    border-radius: 2px;
+    border: 1px solid #eaeaea;
+    margin: 0;
+    display: flex;
+    align-items: center;
+
+    border-color: #e71575;
+    color: #e71575;
+    background: #fff;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.react-datepicker__input-container input::placeholder {
+    color: #e71575;
+  }
+
+.button-text{
+    font-weight: 500;
+}
+
+.book-card-title{
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 500;
+    height: 2rem;
+}
+
+@media (min-width: 1050px){
+.book-card-title {
+    font-size: 1.6875rem;
+}
+}

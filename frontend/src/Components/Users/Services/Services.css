@@ -1,0 +1,124 @@
+.service-container{
+    max-width: 100%;
+    padding: 2rem 1.25rem;
+    margin: 0 auto;
+    text-align: center;
+    background-color: #eff4e2;
+}
+
+.service-heading{
+    color: #4a4a4a;
+    font-weight: 600;
+    font-size: larger;
+    margin-top: 2vh;
+}
+
+.service-list{
+    list-style-type: none;
+}
+
+@media (min-width: 768px){
+.service-list {
+    display: grid;
+    grid-gap: 1rem;
+    gap: 1rem;
+    grid-template-columns: repeat(3,1fr);
+    padding-top: 2rem;
+}
+}
+
+.list-heading{
+    color: #AA0D57;
+    margin-bottom: 1rem;
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.list-para{
+    font-size: .9rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 2rem;
+
+}
+
+.UspSection_YellowIconContainer__xdwU_ {
+    background: #fce6c3;
+}
+
+@media (min-width: 768px){
+.UspSection_IconContainer__MyIrX {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1rem;
+}
+}
+
+.UspSection_IconContainer__MyIrX {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 0.5rem;
+}
+
+.UspSection_YellowIconContainer__xdwU_ .UspSection_Icon__VfPZe {
+    fill: #d5675d;
+}
+
+@media (min-width: 768px){
+.UspSection_Icon__VfPZe {
+    width: 40px;
+    height: 40px;
+}
+}
+
+.UspSection_Icon__VfPZe {
+    fill: var(--color-secondary-teal);
+    width: 32px;
+    height: 32px;
+}
+
+.UspSection_PurpleIconContainer__gfU_Y {
+    background: #6f408d;
+}
+
+.UspSection_PurpleIconContainer__gfU_Y .UspSection_Icon__VfPZe {
+    fill: #f7bb4c;
+}
+
+@media (min-width: 768px){
+.UspSection_Icon__VfPZe {
+    width: 40px;
+    height: 40px;
+}
+}
+
+.UspSection_Icon__VfPZe {
+    fill: var(--color-secondary-teal);
+    width: 32px;
+    height: 32px;
+}
+
+.UspSection_GreenIconContainer__oNPKM {
+    background: #006f6b;
+}
+
+.UspSection_GreenIconContainer__oNPKM .UspSection_Icon__VfPZe {
+    fill: #eff4e2;
+}
+
+@media (min-width: 768px){
+.UspSection_Icon__VfPZe {
+    width: 40px;
+    height: 40px;
+}
+}
+
+.UspSection_Icon__VfPZe {
+    fill: #006f6b;
+    width: 32px;
+    height: 32px;
+}

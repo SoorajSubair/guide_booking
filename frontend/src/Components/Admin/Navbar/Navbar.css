@@ -1,0 +1,26 @@
+
+  .flex-item-right {
+    background-color: #2b2c40;
+    color: #DBDBEB;;
+    padding: 10px;
+    flex: 100%;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 15%);
+    display: flex;
+    justify-content: space-between;
+  }
+  .flex-item-right-NX {
+    justify-content: end;
+  }
+
+  
+  .profile-image {
+    object-fit: cover;
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden; 
+    cursor: pointer;
+  }
+  
+  

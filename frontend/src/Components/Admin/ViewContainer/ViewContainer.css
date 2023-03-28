@@ -1,0 +1,16 @@
+.Form-Container {
+    background-color: #2b2c40;
+    color: #DBDBEB;;
+    padding: 20px;
+    flex: 100%;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 15%);
+    margin-top: 2vh;
+    height: 85vh;
+    align-items: flex-start;
+    display: flex;
+    overflow-x: auto;
+    flex-direction: column;
+  }
+
+  

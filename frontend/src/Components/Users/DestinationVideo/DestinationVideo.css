@@ -1,0 +1,51 @@
+.video-container {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+  }
+
+  .video-main-container{
+    width: 100%;
+    height: calc(100vh - 50px);
+    background-color: #EAEAEA;
+  }
+
+
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  
+  .video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.4);
+
+  }
+
+  .video-heading{
+    font-size: 3rem;
+    font-weight: 1000;
+  }
+
+  .video-para{
+    font-weight: 600;
+  }

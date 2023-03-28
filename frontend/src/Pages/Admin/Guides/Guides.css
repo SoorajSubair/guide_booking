@@ -1,0 +1,20 @@
+/* .dashboard{
+    background-color: #232333;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex: 1 1 auto;
+    align-items: stretch;
+    overflow: hidden;
+    
+}
+.dashboard-container{
+    min-height: 100%;
+    overflow: hidden;
+    display: block;
+    
+}
+
+.dashboard-container-NX{
+    display: none;
+} */

@@ -1,0 +1,51 @@
+.about-section{
+    background: #EAEAEA;
+    color: #4a4a4a;
+    padding-bottom: 6vh;
+}
+
+.about-container{
+    max-width: 1300px;
+    padding: 3rem 0 0;
+    margin: 0 auto;
+    text-align: center;
+}
+
+@media (min-width: 1244px){
+.about-container {
+    padding: 3rem;
+}
+}
+
+@media (min-width: 992px){
+.about-container {
+    text-align: left;
+    display: flex;
+    padding: 3rem 1.25rem;
+}
+}
+
+.about-heading{
+    font-size: xx-large;
+    font-weight: bolder;
+    color: #AA0D57;
+    margin-bottom: 1.5rem;
+}
+.about-para{
+    font-weight: 700;
+    font-size: large;
+    line-height: 1.5;
+    width: 32ch;
+    max-width: 100%;
+    margin: 0 auto 2.5rem;
+}
+
+@media (min-width: 992px){
+.about-para{
+    font-size: larger;
+    margin: 0 0 4rem;
+    line-height: 1.8;
+    width: auto;
+    max-width: 100%;
+}
+}

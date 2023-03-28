@@ -1,0 +1,21 @@
+.guide-container{
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    width: 100%;
+    margin-top: 10vh;
+}
+
+@media (min-width: 768px){
+.guide-container {
+    padding: 0 3rem;
+}
+}
+
+@media (min-width: 1050px){
+.content-block {
+    position: relative;
+    display: flex;
+    padding-bottom: 2rem;
+}
+}

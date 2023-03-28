@@ -1,0 +1,13 @@
+.containers-add {
+    display: inline-grid;
+    flex-wrap: wrap;
+    font-size: 30px;
+    text-align: justify;
+    width: calc(100% - 260px);
+    margin: 3vh;
+    height: min-content;
+    
+  }
+  .containers--add-NX {
+	width: calc(100% - 40px);
+}
