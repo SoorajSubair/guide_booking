@@ -56,3 +56,24 @@
 .navbar-brand {
     cursor: pointer;
 }
+
+.dropdown-toggle{
+    position: absolute;
+    top: -43px;
+    right: 2px;
+    opacity: 0;
+}
+
+.dropdown-menu {
+    left: -89px!important;
+    background-color: rgb(255 245 242)!important;
+}
+
+.dropdown-item:hover{
+    background-color: #AA0D57!important;
+    color: #fff!important;
+}
+
+.logout-dropdown{
+    color: #AA0D57!important;
+}

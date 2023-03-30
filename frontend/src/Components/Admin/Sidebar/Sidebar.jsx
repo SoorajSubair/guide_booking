@@ -8,7 +8,6 @@ import bookings from "../../../Assets/images/bookings.png"
 import payments from "../../../Assets/images/transactions.png"
 import destinations from "../../../Assets/images/location.svg"
 import logout from "../../../Assets/images/logout.svg"
-// import logo from "../../../Assets/images/Logo.svg"
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from "sweetalert2";
 import axios from "../../../Utils/axios"
@@ -48,7 +47,7 @@ const Sidebar = () => {
                     const decodedToken = jwt_decode(access)
                     console.log(decodedToken)
 					// dispatch(change(decodedToken.username))
-					dispatch(change({ username: decodedToken.username, image: decodedToken.image }));
+					dispatch(change({ id: decodedToken.user_id, username: decodedToken.username, image: decodedToken.image }));
 
                     // const token = JSON.parse(response.config.data).token;
                     // const decodedToken = jwt_decode(token)
@@ -61,14 +60,14 @@ const Sidebar = () => {
 				console.log("not-verified")
                 localStorage.removeItem('authTokens');
                 localStorage.removeItem('prevUrl');
-                dispatch(change({ username: null, image: null }));
+                dispatch(change({ id:null, username: null, image: null }));
                 // dispatch(setAuthToken(null))
                 setShouldNavigate(true);
               });
           }else{
             localStorage.removeItem('authTokens');
             localStorage.removeItem('prevUrl');
-            dispatch(change({ username: null, image: null }));
+            dispatch(change({id:null, username: null, image: null }));
             // dispatch(setAuthToken(null))
 			setShouldNavigate(true);
           }
@@ -156,7 +155,7 @@ const Sidebar = () => {
 				if (result.isConfirmed) {
 					localStorage.removeItem('authTokens');
 					localStorage.removeItem('prevUrl');
-					dispatch(change({ username: null, image: null }));
+					dispatch(change({id:null, username: null, image: null }));
 					navigate(url)
 				}
 			  })

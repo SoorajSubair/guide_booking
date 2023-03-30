@@ -9,7 +9,8 @@ class Destination(models.Model):
     country = models.CharField(max_length=255)
     image = models.ImageField(null=True , blank=True)
     video = models.FileField(null=True, blank=True)
-    short_info = models.TextField(max_length=255, null=True, blank=True)
+    fee = models.DecimalField(max_digits=8, decimal_places=2)
+    short_info = models.TextField(max_length=255)
     about = models.TextField()
     type = models.CharField(max_length=255)
 
@@ -36,14 +37,27 @@ class CustomUser(AbstractUser):
         return self.username
     
 
-# class Guides(models.Model):
-#     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-#     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
-#     language = JSONField(null=True, blank=True)
-#     bio = models.TextField(null = True, blank=True)
+class Booking(models.Model):
+    guide = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='bookings_as_guide')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='bookings_as_user')
+    destination = models.ForeignKey(Destination, models.CASCADE)
+    date = models.DateTimeField()
+    is_accepted = models.BooleanField(default=False)
+    is_declined = models.BooleanField(default=False)
+    trip_started = models.BooleanField(default=False)
+    trip_ended = models.BooleanField(default=False)
+    is_start_code = models.CharField(max_length=6)
+    is_end_code = models.CharField(max_length=6)
 
-#     def __str__(self):
-#         return self.user.username
-    
+
+class Payment(models.Model):
+    booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
+    is_refunded = models.BooleanField(default=False)
+
+
+class GuidePayment(models.Model):
+    booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=8, decimal_places=2)
+    is_paid = models.BooleanField(default=False)
 
 

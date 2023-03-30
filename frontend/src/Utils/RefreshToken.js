@@ -20,11 +20,14 @@ export const RefreshToken = async (navigate) => {
         localStorage.setItem('authTokens', JSON.stringify(data));
       }
       else{
-        console.log('admin')
+        localStorage.removeItem('authTokens');
+        localStorage.removeItem('prevUrl');
         navigate('/admin')
       }
     }
   } catch (error) {
-    navigate('/admin')
-  }
+      localStorage.removeItem('authTokens');
+      localStorage.removeItem('prevUrl');
+      navigate('/admin')
+    }
 };

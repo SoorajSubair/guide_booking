@@ -1,0 +1,63 @@
+.about-bio-holder{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding-top: 20px ;
+    gap: 24px;
+}
+
+.about-card{
+    background-color: #ffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 15%);
+    border-radius: 6px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+    gap: 24px;
+    min-width: max-content;
+}
+
+@media only screen and (max-width: 1000px) {
+    .about-bio-holder {
+        flex-direction: column;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .about-card {
+        height: min-content;
+    }
+}
+
+.guide-about-h5{
+    font-size: medium;
+    font-weight: 500;
+}
+
+.guide-about-details{
+    font-size: medium;
+}
+
+.bio-card{
+    background-color: #ffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 15%);
+    border-radius: 6px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+    gap: 24px;
+}
+
+.guide-bio-h4{
+    font-size: medium;
+    font-weight: 500;
+}
+
+.guide-bio-details{
+    font-size: medium;
+    line-height: 1.4rem;
+}

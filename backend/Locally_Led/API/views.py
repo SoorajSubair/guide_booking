@@ -1,7 +1,8 @@
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser,IsAuthenticated
+from .permissions import IsGuide
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .serializers import *
@@ -215,6 +216,31 @@ def get_guide(request, pk):
 
     guide = CustomUserSerializer(guide)
     return Response(guide.data, status = status.HTTP_200_OK)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated, IsGuide])
+def update_guide(request, pk):
+    try:
+        guide = CustomUser.objects.get(pk=pk)
+    except CustomUser.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+   
+    serializer = CustomUserSerializer(guide, data=request.data, partial=True)
+    if serializer.is_valid():
+        guide = serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    
+
+
+
+
+
+
+
         
 
 

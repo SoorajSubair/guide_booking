@@ -1,0 +1,174 @@
+/* *{
+    box-sizing: unset;
+} */
+
+.guide-schedule-card{
+    width: 100%;
+}
+.p-paginator-pages{
+    display: flex;
+}
+.p-paginator .p-paginator-first, .p-paginator .p-paginator-prev, .p-paginator .p-paginator-next, .p-paginator .p-paginator-last {
+    
+    display: contents;
+}
+.p-input-icon-left, .p-input-icon-right {
+    position: relative;
+    display: flex;
+
+}
+.guide-schedule-card .p-datatable .p-datatable-header {
+    background: #ffffff!important;
+    border-bottom: 1px solid #d0d0ea2e;
+    border-top: none;
+}
+
+.guide-schedule-card .p-inputtext {
+    color: #DBDBEB;
+    background: #ffffff;
+    border: 1px solid #0e0e102e !important;
+}
+.p-inputtext:enabled:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.1rem #696CFF;
+    border-color: #696CFF;
+}
+.p-inputtext:hover{
+    border-color: #696CFF !important;
+}
+.guide-schedule-card .p-datatable .p-datatable-thead > tr > th {
+    color: #32475cd9;
+    background-color: #ffff;
+    border: none;
+}
+.p-datatable .p-datatable-tbody > tr > td {
+    border-bottom: 1px solid #d0d0ea2e;
+    cursor: pointer;
+}
+.guide-schedule-card .p-datatable .p-datatable-tbody > tr > td:hover {
+    border-bottom: 1px solid #696CFF;
+    background-color: #ffff;
+	color: #696CFF;
+}
+
+.guide-schedule-card .p-datatable .p-datatable-tbody > tr {
+    color: #32475cd9;
+    background-color: #ffff;
+    border: none !important;
+}
+
+.guide-schedule-card .p-paginator {
+    color: #32475cd9;
+    background-color: #ffff;
+    border: none;
+}
+.p-multiselect-label-container {
+    color: #DBDBEB;
+    background: #2B2C40;
+}
+.p-multiselect .p-multiselect-trigger {
+    color: #DBDBEB;
+    background: #2B2C40;
+}
+.p-multiselect {
+     border: 1px solid #40404fd1 !important
+}
+.p-multiselect:enabled:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.1rem #696CFF;
+    border-color: #696CFF;
+}
+.p-multiselect:hover{
+    border-color: #696CFF !important;
+}
+.p-multiselect-panel .p-multiselect-header {
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid #40404fd1 !important;
+    color: #DBDBEB;
+    background: #2B2C40;
+    margin: 0;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+}
+.p-multiselect-panel {
+    color: #DBDBEB;
+    background: #2B2C40;
+    border: 0 none;
+    border-radius: 6px;
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+}
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover {
+    background-color: #2B2E4F;
+	color: #696CFF;
+}
+.p-dropdown {
+    color: #DBDBEB;
+    background: #2B2C40;
+    border: 1px solid #40404fd1 !important;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border-radius: 6px;
+}
+.p-dropdown-panel {
+    color: #DBDBEB;
+    background: #2B2C40;
+}
+.guide-schedule-card .p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+    background-color: #696cff25;
+	color: #696CFF;
+}
+.guide-schedule-card .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    border:none;
+    background-color: #ffffff;
+	color: #696CFF;
+}
+.guide-schedule-card .p-paginator .p-paginator-pages .p-paginator-page.p-highlight:hover {
+    border:none;
+    background-color: #696cff25;
+	color: #696CFF;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+}
+
+.red-button{
+    background-color: red;
+}
+
+.green-button{
+    background-color: #adff2fb0;
+}
+.view-button{
+    background-color: #696CFF;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    width: -webkit-fill-available;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0px;
+
+}
+
+.update-button{
+    background-color: green;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    width: -webkit-fill-available;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0px;
+
+}

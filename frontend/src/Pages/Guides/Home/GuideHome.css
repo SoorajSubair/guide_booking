@@ -1,0 +1,22 @@
+.guide-dashboard{
+    background-color: #32475c15;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex: 1 1 auto;
+    align-items: stretch;
+    overflow: hidden;
+    
+}
+.dashboard-container{
+    min-height: 100%;
+    overflow: hidden;
+    display: block;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+    
+}
+
+.dashboard-container-NX{
+    display: none;
+   
+}

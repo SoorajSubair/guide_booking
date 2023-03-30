@@ -1,0 +1,33 @@
+.containers {
+    display: inline-grid;
+    flex-wrap: wrap;
+    font-size: 30px;
+    text-align: right;
+    width: calc(100% - 260px);
+    margin: 3vh;
+    height: min-content;
+    
+  }
+  .containers-NX {
+	width: calc(100% - 40px);
+}
+ 
+.guide-Table-Container {
+    background-color: #32475c00;
+    color: #32475cd9;;
+    /* padding: 20px; */
+    flex: 100%;
+    border-radius: 6px;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 15%); */
+    margin-top: 2vh;
+    height: 85vh;
+    align-items: flex-end;
+    display: flex;
+    overflow-x: auto;
+    flex-direction: column;
+  }
+
+  .btn-hide {
+    display: none;
+  }
+

@@ -16,4 +16,5 @@ export const userOtp = "/api/user_otp/";
 export const otpConfirm = "/api/otp_confirm/";
 export const getTop5MegaCity = "/api/get_top5MegaCity/";
 export const getTop5NatureFriendly = "/api/get_top5NatureFriendly/";
-export const getGuide = "/api/get_guide/"
+export const getGuide = "/api/get_guide/";
+export const updateGuide = "/api/update_guide/";

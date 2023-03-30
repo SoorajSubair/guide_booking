@@ -2,21 +2,24 @@ import React,{useEffect, useState} from 'react'
 import './Navbar.css'
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/esm/Button';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../../Utils/axios'
-import { verifyToken } from '../../../Utils/Urls';
+import { verifyToken,baseUrl } from '../../../Utils/Urls';
 import jwt_decode from "jwt-decode";
 import { useDispatch } from 'react-redux';
 import { change } from "../../../Redux/authenticationSlice";
 import { UserRefreshToken } from '../../../Utils/UserRefreshToken';
 import Swal from 'sweetalert2';
 import logo from '../../../Assets/images/logo.svg'
-
+import { useSelector } from 'react-redux';
 
 
 function NavBar() {
 
+    const { image } = useSelector(state => state.user);
+    const profileImage = `${baseUrl}${image}`
     const dispatch = useDispatch();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
@@ -103,12 +106,22 @@ function NavBar() {
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           {isLoggedIn && 
-          <Navbar.Text className={destinationPageUrl === window.location.pathname & !isScrolled ? "navbar-text-destination" : ""}>
-            Profile
-          </Navbar.Text >
+          // <Navbar.Text className={destinationPageUrl === window.location.pathname & !isScrolled ? "navbar-text-destination" : ""}>
+          //   Profile
+          // </Navbar.Text >
+          <Navbar.Brand id="basic-nav-dropdown" ><img src={profileImage} alt='logo' style={{height:'50px', width:'50px', borderRadius:'50%', objectFit:'cover'}}></img>
+          <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+              <NavDropdown.Item>Profile</NavDropdown.Item>
+              <NavDropdown.Item>Bookings</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate('/chat')}>Chat</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={handleLogout} className='logout-dropdown'>Logout</NavDropdown.Item>
+          </NavDropdown>
+          </Navbar.Brand>
           }
           {isLoggedIn ?
-          <Button onClick={handleLogout} className={destinationPageUrl === window.location.pathname & !isScrolled  ? "nav-button-destination nav-button" : "nav-button"}>Logout</Button>
+          ''
+          // <Button onClick={handleLogout} className={destinationPageUrl === window.location.pathname & !isScrolled  ? "nav-button-destination nav-button" : "nav-button"}>Logout</Button>
           :
           <Button onClick={() => navigate('/login')} className={destinationPageUrl === window.location.pathname & !isScrolled  ? "nav-button-destination nav-button" : "nav-button"}>Login</Button>
           }

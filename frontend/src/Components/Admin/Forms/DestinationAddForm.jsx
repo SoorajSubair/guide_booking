@@ -15,6 +15,8 @@ function DestinationAddForm() {
   const [destination, setDestination] = useState('')
   const [country, setCountry] = useState('')
   const [about, setAbout] = useState('')
+  const [shortInfo, setShortInfo] = useState('')
+  const [fee, setFee] = useState('')
   const [destinationType, setDestinationtype] = useState('')
   const [image, setImage] = useState(null)
   const [video, setVideo] = useState(null)
@@ -55,6 +57,8 @@ function DestinationAddForm() {
           formData.append('image', image);
           formData.append('video', video);
           formData.append('type', destinationType)
+          formData.append('short_info', shortInfo)
+          formData.append('fee', fee)
         //   formData.append('extra_images', extraImages);
           extraImages.forEach((image) => {
             formData.append('extra_images', image);
@@ -131,6 +135,42 @@ function DestinationAddForm() {
           <Form.Control.Feedback type="invalid">Please choose a Country</Form.Control.Feedback>
         </Form.Group>
       </Row>
+      <Row className="mb-3">
+        <Form.Group as={Col} md="6" controlId="validationCustomUsername10">
+          <Form.Label>Short Info</Form.Label>
+          <InputGroup hasValidation>
+            <Form.Control
+              as="textarea"
+              rows={1}
+              type="text"
+              placeholder="Short info for the destination..."
+              aria-describedby="inputGroupPrepend"
+              required
+              defaultValue={shortInfo}
+              onChange={(e) => setShortInfo(e.target.value)}
+            />
+            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              Please write s short info
+            </Form.Control.Feedback>
+          </InputGroup>
+        </Form.Group>
+
+        <Form.Group as={Col} md="6" controlId="validationCustom02">
+          <Form.Label>Fee</Form.Label>
+            <Form.Control
+              required
+              type="number"
+              step="0.01"
+              placeholder="Fee"
+              defaultValue={fee}
+              onChange={(e) => setFee(parseFloat(e.target.value))}
+            />
+            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">Please choose a Fee</Form.Control.Feedback>
+        </Form.Group>
+
+        </Row>
       <Row className="mb-3">
         <Form.Group as={Col} md="12" controlId="validationCustomUsername">
           <Form.Label>About</Form.Label>

@@ -1,0 +1,48 @@
+.containers-add {
+    display: inline-grid;
+    flex-wrap: wrap;
+    font-size: 30px;
+    text-align: justify;
+    width: calc(100% - 260px);
+    margin: 3vh;
+    height: min-content;
+    
+  }
+  .containers--add-NX {
+	width: calc(100% - 40px);
+}
+
+
+.guide-Form-Container::-webkit-scrollbar {
+    display: none!important;
+  }
+  
+  .guide-Form-Container {
+      background-color: #ffffff;
+      color: #32475cd9;;
+      padding: 20px;
+      flex: 100%;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 15%);
+      margin-top: 2vh;
+      height: 85vh;
+      align-items: flex-start;
+      display: flex;
+      overflow-x: auto;
+      flex-direction: column;
+      scrollbar-width: none!important; /* hide scrollbar for Firefox */
+      -ms-overflow-style: none!important; /* hide scrollbar for Internet Explorer and Edge */
+    }
+  
+    .heading-container{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+  
+    .guide-Form-Heading{
+      font-size: larger;
+      font-weight: 600;
+      color: #32475cd9;
+    }
+  

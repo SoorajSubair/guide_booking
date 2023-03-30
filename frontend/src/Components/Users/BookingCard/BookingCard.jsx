@@ -2,10 +2,11 @@ import React,{useState} from 'react'
 import './BookingCard.css'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import { useGuide } from '../../../Context/GuideContext'
 
 function BookingCard() {
     
+    const guide = useGuide()
     const disabledDatesList = ["2023-03-27", "2023-03-28", "2023-03-31"];
     const [selectedDate, setSelectedDate] = useState(null);
     const isDateDisabled = (date) => {
@@ -33,7 +34,7 @@ function BookingCard() {
     <div className="chat-card-container">
         <div className="chat-card-header">
             <div>
-                <h1 className="book-card-title"><strong>€77.79</strong> for a day</h1>
+                <h1 className="book-card-title"><strong>€{guide?.destination?.fee}</strong> for a day</h1>
             </div>
             {/* <div className="chat-card-image">
                 <div className="chat-card-image-container">

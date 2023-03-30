@@ -32,35 +32,27 @@ function DestinationViewForm() {
             })    
       },[url])
 
-    // const [showOverlay, setShowOverlay] = useState(false);
-    // const handleMouseEnter = () => setShowOverlay(true);
-    // const handleMouseLeave = () => setShowOverlay(false);
-
   return (
     <>
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
       <Card 
       className="bg-dark text-white"
-    //   onMouseEnter={handleMouseEnter}
-    //   onMouseLeave={handleMouseLeave}
     >
       <Card.Img className='destination-image' src={`${baseUrl}${destination.image}`} alt="Card image"/>
-      {/* {showOverlay && ( */}
+     
           <Card.ImgOverlay className='overlay'>
             <Card.Title className="center-input">{destination.name}</Card.Title>
-             {/* <input type="file" className="center-input" /> */}
+      
           </Card.ImgOverlay>
-      {/* )} */}
+    
     </Card>
       <Card className='about-destination'>
         <Card.Body>
-            {/* <div className='edit-button-container'>
-            <Button className='edit-button'>Edit</Button>
-            </div> */}
+            
             <div className='about-text-container'>
           <Card.Text className='about-text'>{destination.about}
           </Card.Text>
-          {/* <Card.Img className='edit-icon' src={edit} alt="edit"></Card.Img> */}
+          
           </div>
         </Card.Body>
       </Card>

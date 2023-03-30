@@ -20,7 +20,7 @@ class DestinationGetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Destination
-        fields = ['id','name', 'country', 'image','video', 'about','type','short_info', 'guide_count', 'extra_images','guides']
+        fields = ['id','name', 'country', 'image','video','fee', 'about','type','short_info', 'guide_count', 'extra_images','guides']
 
     def get_guide_count(self, obj):
         return obj.customuser_set.count()
@@ -39,15 +39,29 @@ class CustomUserSerializer(serializers.ModelSerializer):
         if password is not None:
             validated_data['password'] = make_password(password)
         return super().create(validated_data)
+    
+    def update(self, instance, validated_data):
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.email = validated_data.get('email', instance.email)
+        instance.bio = validated_data.get('bio', instance.bio)
+        instance.phone = validated_data.get('phone', instance.phone)
+
+        image = validated_data.get('image', None)
+        if image is not None:
+            instance.image = image
         
+        instance.save()
 
+        return instance
 
+        
 class DestinationSerializer(serializers.ModelSerializer):
     extra_images = ExtraDestinationImageSerializer(many=True, required=False)
 
     class Meta:
         model = Destination
-        fields = ['name', 'country', 'about', 'image','video','short_info','type', 'extra_images']
+        fields = ['name', 'country', 'about', 'image','fee','video', 'short_info', 'type', 'extra_images']
 
     def create(self, validated_data):
         extra_images_data = validated_data.pop('extra_images', [])
@@ -66,6 +80,8 @@ class DestinationSerializer(serializers.ModelSerializer):
         instance.country = validated_data.get('country', instance.country)
         instance.about = validated_data.get('about', instance.about)
         instance.type = validated_data.get('type', instance.type)
+        instance.short_info = validated_data.get('short_info', instance.short_info)
+        instance.fee = validated_data.get('fee', instance.fee)
 
         image = validated_data.get('image', None)
         video = validated_data.get('video', None)

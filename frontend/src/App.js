@@ -16,6 +16,12 @@ import Authentication from './Pages/Users/Authentication/Authentication';
 import Landing from './Pages/Users/Landing/Landing';
 import Destination from './Pages/Users/Destination/Destination';
 import Guide from './Pages/Users/Guide/Guide';
+import GuideLogin from './Pages/Guides/login/GuideLogin';
+import GuideHome from './Pages/Guides/Home/GuideHome';
+import GuideSchedule from './Pages/Guides/Schedule/GuideSchedule';
+import ProfileEdit from './Pages/Guides/ProfileEdit/ProfileEdit';
+import Chat from './Pages/Users/Chat/Chat';
+
 
 
 
@@ -50,6 +56,14 @@ function App() {
          <Route path="/signup" element={<Authentication/>} />
          <Route path="/destination/:destinationId" element={<Destination/>} />
          <Route path="/guide/:guideId" element={<Guide/>} />
+         <Route path="/chat" element={<Chat/>} />
+
+         {/* <------- Guide Routes -------> */}
+
+         <Route path="/guide" element={<GuideLogin/>} />
+         <Route path="/guide/profile" element={<GuideHome/>} />
+         <Route path="/guide/profile/edit" element={<ProfileEdit/>} />
+         <Route path="/guide/schedules" element={<GuideSchedule/>} />
         
 
 
