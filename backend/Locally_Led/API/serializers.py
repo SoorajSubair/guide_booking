@@ -11,7 +11,7 @@ class ExtraDestinationImageSerializer(serializers.ModelSerializer):
 class GuideSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'first_name' , 'image']
+        fields = ['id', 'first_name' ,'last_name', 'image']
 
 class DestinationGetSerializer(serializers.ModelSerializer):
     extra_images = ExtraDestinationImageSerializer(source='extradestinationimage_set', many=True, read_only=True)
@@ -99,35 +99,44 @@ class DestinationSerializer(serializers.ModelSerializer):
 
         return instance
     
-# class DestinationGetSerializer(serializers.ModelSerializer):
-#     extra_images = ExtraDestinationImageSerializer(source='extradestinationimage_set', many=True, read_only=True)
-#     guide_count = serializers.SerializerMethodField()
 
-#     class Meta:
-#         model = Destination
-#         fields = ['id','name', 'country', 'image', 'about', 'guide_count', 'extra_images']
+class BookingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = '__all__'
 
-#     def get_guide_count(self, obj):
-#         return obj.guides_set.count()
-    
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = '__all__'
 
-# class GuideSerializer(serializers.ModelSerializer):
-#     user = CustomUserSerializer()
-#     destination = DestinationGetSerializer()
-
-#     class Meta:
-#         model = Guides
-#         fields = ('id','user','destination')
+class BookingGetSerializer(serializers.ModelSerializer):
+    destination = DestinationGetSerializer(read_only=True)
+    user = CustomUserSerializer(read_only=True)
+    guide = GuideSerializer(read_only=True)
+    payment = PaymentSerializer(read_only=True)
 
 
-# class DestinationSerializer(serializers.ModelSerializer):
-#     guide_count = serializers.SerializerMethodField()
+    class Meta:
+        model = Booking
+        fields = '__all__'
 
-#     class Meta:
-#         model = Destination
-#         fields = '__all__'
-    
-#     def get_guide_count(self, obj):
-#         return obj.guides_set.count()
+class PaymentGetSerializer(serializers.ModelSerializer):
+    booking = BookingGetSerializer(read_only=True)
 
+    class Meta:
+        model = Payment
+        fields = '__all__'
+
+class GuidePaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GuidePayment
+        fields = '__all__'
+
+class GuidePaymentGetSerializer(serializers.ModelSerializer):
+    booking = BookingGetSerializer(read_only=True)
+
+    class Meta:
+        model = GuidePayment
+        fields = '__all__'
 

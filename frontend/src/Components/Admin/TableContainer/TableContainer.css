@@ -12,6 +12,7 @@
     display: flex;
     overflow-x: auto;
     flex-direction: column;
+    overflow-y: hidden;
   }
 
   .btn-hide {

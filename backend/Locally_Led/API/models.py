@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 # from django.contrib.postgres.fields import JSONField
 from django.db.models import JSONField
+from decimal import Decimal
+
 
 
 class Destination(models.Model):
@@ -32,6 +34,7 @@ class CustomUser(AbstractUser):
     is_guide = models.BooleanField(default=False)
     bio = models.TextField(null =True, blank=True)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE, null=True)
+    wallet = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
 
     def __str__(self):
         return self.username
@@ -41,23 +44,31 @@ class Booking(models.Model):
     guide = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='bookings_as_guide')
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='bookings_as_user')
     destination = models.ForeignKey(Destination, models.CASCADE)
-    date = models.DateTimeField()
-    is_accepted = models.BooleanField(default=False)
+    date = models.DateField()
+    is_booked = models.BooleanField(default=False)
+    # is_accepted = models.BooleanField(default=False)
     is_declined = models.BooleanField(default=False)
     trip_started = models.BooleanField(default=False)
     trip_ended = models.BooleanField(default=False)
-    is_start_code = models.CharField(max_length=6)
-    is_end_code = models.CharField(max_length=6)
+    is_start_code = models.CharField(max_length=6,null=True,blank=True)
+    is_end_code = models.CharField(max_length=6,null=True,blank=True)
 
 
 class Payment(models.Model):
-    booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
+    booking = models.OneToOneField(Booking, on_delete=models.CASCADE, related_name='payment')
     is_refunded = models.BooleanField(default=False)
+    method = models.CharField(max_length=100)
 
 
 class GuidePayment(models.Model):
     booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=8, decimal_places=2)
+    amount = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     is_paid = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            # Only set the amount field on creation, not on updates
+            self.amount = self.booking.destination.fee * Decimal(0.7)
+        super().save(*args, **kwargs)
 
 

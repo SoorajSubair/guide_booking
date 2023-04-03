@@ -172,3 +172,30 @@
     margin-bottom: 0px;
 
 }
+
+.admin-booking-button-container{
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.admin-booking-button{
+    width: fit-content!important;
+    color: #9696b2;
+    background-color: #32475c00;
+    border: 1px solid #9696b2;
+}
+
+.admin-booking-button:hover{
+    color: #fff;
+    background-color: #696CFF;
+    border: 1px solid #9696b2;
+}
+
+.booking-active{
+    color: #fff;
+    background-color: #696CFF;
+    border: 1px solid #696CFF;
+}

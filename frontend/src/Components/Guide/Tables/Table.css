@@ -172,3 +172,44 @@
     margin-bottom: 0px;
 
 }
+
+.guide-booking-button-container{
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+}
+
+.guide-booking-button{
+    width: fit-content!important;
+    color: #9696b2;
+    background-color: #32475c00;
+    border: 1px solid #9696b2;
+}
+
+.guide-booking-button:hover{
+    color: #fff;
+    background-color: #696CFF;
+    border: 1px solid #9696b2;
+}
+
+.booking-active{
+    color: #fff;
+    background-color: #696CFF;
+    border: 1px solid #696CFF;
+}
+
+.code-input{
+    background-color: #ffff;
+    color: #32475cd9;
+}
+
+.code-input-button{
+    margin-top: 5px;
+    width: fit-content;
+}
+
+.p-dialog.p-component.p-dialog-default.p-ripple-disabled.p-dialog-enter-done{
+    max-width: 97%;
+}

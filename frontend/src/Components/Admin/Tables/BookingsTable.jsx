@@ -1,66 +1,58 @@
 import "primereact/resources/themes/lara-light-indigo/theme.css";    
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import './Table.css'
+import './UserTable.css'
 import React, { useState, useEffect } from 'react';
 import { FilterMatchMode } from 'primereact/api';
 import { DataTable } from 'primereact/datatable';
-import { Dialog } from 'primereact/dialog';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import axios from '../../../Utils/axios'
-import {guideUpcommingBookings,guideCompletedBookings,guideCurrentBookings,startTrip,endTrip, baseUrl } from "../../../Utils/Urls";
-import Swal from "sweetalert2";
-import { useSelector } from "react-redux";
+import {allActiveBookings, allCanceledBookings, allCompletedBookings, allScheduledBookings, baseUrl } from "../../../Utils/Urls";
 
 
-export default function GuideSchedulesTable() {
+export default function BookingsTable() {
     const [customers, setCustomers] = useState(null);
     const [isMounted, setIsMounted] = useState(false)
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
         'user.first_name': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        country: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        guide_count: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'user.last_name': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'guide.first_name': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'guide.last_name': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'destination.name': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        'destination.country': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+   
     });
     const [loading, setLoading] = useState(true);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
 
-    const [bookingType, setBookingType] = useState('sheduled')
-    const { id } = useSelector(state => state.user);
-    const url = id ? `${guideUpcommingBookings}${id}` : "";
-    const [bookingUrl, setBookingUrl] = useState(url)
-    const [code, setCode] = useState('')
-    const [tripId, setTripId] = useState('')
+    const [bookingType, setBookingType] = useState('scheduled')
+    const [bookingUrl, setBookingUrl] = useState(allScheduledBookings)
 
 
-    useEffect(()=>{
-      if(id){
-      const user_authTokens = JSON.parse(localStorage.getItem('guide_authTokens'))
-      const access = user_authTokens?.access
-      axios.get(bookingUrl, {
-          headers: {"Authorization": `Bearer ${access}`,'Content-Type': 'multipart/form-data' },
-        })
-          .then((response) => {
-            if (response.status === 200) {
-              console.log(response.data)
-              setCustomers((getCustomers(response.data)));
-              setLoading(false);
-             
-            }
-          })
-          .catch((error)=>{
-              setCustomers(null)
-              
-          })
-      }
-  },[isMounted,bookingUrl])
-
-  useEffect(() => {
-      setBookingUrl(url);
-    }, [url]);
     
 
+    useEffect(()=>{
+        const user_authTokens = JSON.parse(localStorage.getItem('authTokens'))
+        const access = user_authTokens?.access
+        axios.get(bookingUrl, {
+            headers: {"Authorization": `Bearer ${access}`,'Content-Type': 'multipart/form-data' },
+          })
+            .then((response) => {
+              if (response.status === 200) {
+                console.log(response.data)
+                setCustomers((getCustomers(response.data)));
+                setLoading(false);
+               
+              }
+            })
+            .catch((error)=>{
+                setCustomers(null)
+                
+            })
+    },[isMounted,bookingUrl])
+  
     
     const getCustomers = (data) => {
         return [...(data || [])].map((d) => {
@@ -75,7 +67,7 @@ export default function GuideSchedulesTable() {
         let _filters = { ...filters };
 
         _filters['global'].value = value;
-
+        
         setFilters(_filters);
         setGlobalFilterValue(value);
     };
@@ -91,148 +83,70 @@ export default function GuideSchedulesTable() {
         );
     };
 
-   
+    const header = renderHeader();
 
-    const deleteBodyTemplate = (rowData) => {
-        const destinationId = rowData.id
+    const handleBooking = (type) => {
+        setBookingType(type)
+        if(type === 'scheduled'){
+            setBookingUrl(allScheduledBookings)
+  
+        }
+        else if(type === 'active'){
+            setBookingUrl(allActiveBookings)
+  
+        }
+        else if(type === 'completed'){
+            setBookingUrl(allCompletedBookings)
+  
+        }
+        else if(type === 'canceled'){
+            setBookingUrl(allCanceledBookings)
+        }
+    }
+  
+    const userBodyTemplate = (rowData) => {
+        const image = rowData.user.image;
+        const firstName = rowData.user.first_name;
+        const lastName = rowData.user.last_name
 
         return (
             <div className="flex align-items-center gap-2" style={{display: 'flex',justifyContent: 'start',alignItems: 'center' }}>
-                <button className="red-button" onClick={() => handleDelete(destinationId)}>Delete</button>
+                <img alt={image} src={`${baseUrl}${image}`} width="32" height='32' style={{borderRadius:"50%", marginRight:"1vw" , objectFit:"cover"}} />
+                <span>{`${firstName} ${lastName}`}</span>
             </div>
-        )
-    }
-
-    const [start, setStart] = useState(false);
-    const viewBodyTemplate = (rowData) => {
-      const currentDate = new Date();
-      const rowDate = new Date(rowData.date);
-      const bookingId = rowData.id
-    
-      if (currentDate.toDateString() === rowDate.toDateString()) {
-        return (
-          <>
-          {bookingType === 'sheduled' ? (
-          <div className="flex align-items-center gap-2" style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
-            <button className="code-button" onClick={() => {setTripId(bookingId);  setStart(!start)}}>Start Trip</button>
-          </div>
-          ):
-          (
-          <div className="flex align-items-center gap-2" style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
-            <button className="code-button" onClick={() => {setTripId(bookingId);  setStart(!start)}}>End Trip</button>
-          </div>
-          )}
-          </>
         );
-      }
-    
-      return null;
     };
 
- 
+    const guideBodyTemplate = (rowData) => {
+        const image = rowData.guide.image;
+        const firstName = rowData.guide.first_name;
+        const lastName = rowData.guide.last_name
 
-    const header = renderHeader();
-
-    const representativeBodyTemplate = (rowData) => {
-      const image = rowData.user.image;
-      const firstName = rowData.user.first_name;
-      const lastName = rowData.user.last_name
-
-      return (
-          <div className="flex align-items-center gap-2" style={{display: 'flex',justifyContent: 'start',alignItems: 'center' }}>
-              <img alt={image} src={`${baseUrl}${image}`} width="32" height='32' style={{borderRadius:"50%", marginRight:"1vw" , objectFit:"cover"}} />
-              <span>{`${firstName} ${lastName}`}</span>
-          </div>
-          );
+        return (
+            <div className="flex align-items-center gap-2" style={{display: 'flex',justifyContent: 'start',alignItems: 'center' }}>
+                <img alt={image} src={`${baseUrl}${image}`} width="32" height='32' style={{borderRadius:"50%", marginRight:"1vw" , objectFit:"cover"}} />
+                <span>{`${firstName} ${lastName}`}</span>
+            </div>
+        );
     };
 
     function formatDate(dateStr) {
-      const dateObj = new Date(dateStr);
-      const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-      return dateObj.toLocaleDateString('en-IN', options);
-    }
-
-    const handleBooking = (type) => {
-      setBookingType(type)
-      if(type === 'sheduled'){
-          setBookingUrl(`${guideUpcommingBookings}${id}`)
-
+        const dateObj = new Date(dateStr);
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        return dateObj.toLocaleDateString('en-IN', options);
       }
-      else if(type === 'active'){
-          setBookingUrl(`${guideCurrentBookings}${id}`)
-
-      }
-      else if(type === 'completed'){
-          setBookingUrl(`${guideCompletedBookings}${id}`)
-
-      }
-  }
-
-  const handleCodeSubmit = (e)=>{
-    e.preventDefault();
-    const user_authTokens = JSON.parse(localStorage.getItem('guide_authTokens'))
-    const access = user_authTokens?.access
-    let codeSubmitUrl;
-    if(bookingType === 'sheduled'){
-      codeSubmitUrl = `${startTrip}${tripId}`
-    }
-    else{
-      codeSubmitUrl = `${endTrip}${tripId}`
-    }
-    axios
-    .put(codeSubmitUrl, { code: code }, {
-        headers: {
-            Authorization: `Bearer ${access}`,
-            "Content-Type": "application/json",
-          },
-    })
-    .then((response) => {
-      if (response.status === 200) {
-      if(bookingType === 'sheduled'){
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Trip has started!",
-            showConfirmButton: false,
-            timer: 2000,
-          });
-      }
-      else{
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Trip has ended!",
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      }
-        setStart(!start)
-        setIsMounted(!isMounted)
-      }
-    })
-    .catch((error) => {
-      console.log(error.response.data)
-      Swal.fire({
-        position: "center",
-        icon: "warning",
-        title: "Incorrect Code",
-        showConfirmButton: false,
-        timer: 2000,
-      });
-    });
-    
-  }
 
     return (
-      <>
-      <div className="guide-booking-button-container">
-          <button onClick={()=>handleBooking('sheduled')} className={bookingType==='sheduled' ? "guide-booking-button booking-active" : "guide-booking-button"}>Scheduled</button>
-          <button onClick={()=>handleBooking('active')} className={bookingType==='active' ? "guide-booking-button booking-active" : "guide-booking-button"}>Active</button>
-          <button onClick={()=>handleBooking('completed')} className={bookingType==='completed' ? "guide-booking-button booking-active" : "guide-booking-button"}>Completed</button>
-      </div>
-      {customers===null?
-      <>
-      <div class="Container-1G5cP">
+        <>
+        <div className="admin-booking-button-container">
+          <button onClick={()=>handleBooking('scheduled')} className={bookingType === 'scheduled' ? "admin-booking-button booking-active" : "admin-booking-button"}>Scheduled</button>
+          <button onClick={()=>handleBooking('active')} className={bookingType === 'active' ? "admin-booking-button booking-active" : "admin-booking-button"}>Active</button>
+          <button onClick={()=>handleBooking('completed')} className={bookingType === 'completed' ? "admin-booking-button booking-active" : "admin-booking-button"}>Completed</button>
+          <button onClick={()=>handleBooking('canceled')} className={bookingType === 'canceled' ? "admin-booking-button booking-active" : "admin-booking-button"}>Canceled</button>
+        </div>
+        {customers===null?
+        <>
+        <div class="Container-1G5cP">
           <svg class="SVG-Xp0aR" viewBox="0 0 397.68 268.72" width="320" height="216">
               <g fill="#696CFF">
                   <path d="M106.52,58.9h37.17a.75.75,0,0,0,0-1.5H106.52a.75.75,0,0,0,0,1.5Z"></path>
@@ -258,31 +172,17 @@ export default function GuideSchedulesTable() {
         </div>
         </>
         :
-        <div className="guide-schedule-card">
+        <div className="card">
             <DataTable value={customers} paginator rows={7} dataKey="id" filters={filters} filterDisplay="row" loading={loading}
-                    globalFilterFields={['user.first_name','user.last_name', 'date', 'destination.name', 'destination.country']} header={header} emptyMessage="No data found.">
-                <Column header="Tourist" style={{ minWidth: '12rem'}} body={representativeBodyTemplate}/>
+                    globalFilterFields={['user.first_name','user.last_name','guide.first_name','guide.last_name', 'destination.country', 'destination.name']} header={header} emptyMessage="No bookings found.">
+                <Column header="User" filterField="user.first_name" style={{ minWidth: '12rem'}} body={userBodyTemplate} filter filterPlaceholder="Search by user"/>
+                <Column header="Guide" filterField="guide.first_name" style={{ minWidth: '12rem'}} body={guideBodyTemplate} filter filterPlaceholder="Search by guide"/>
+                <Column field="destination.name" header="Destination" filter filterPlaceholder="Search by destination" style={{ minWidth: '12rem' }} />
+                <Column field="destination.country" header="Country" filter filterPlaceholder="Search by country" style={{ minWidth: '6rem' }} />
                 <Column field="date" header="Date" style={{ minWidth: '6rem' }} body={rowData => formatDate(rowData.date)}/>
-                <Column field="destination.name" header="Destination" style={{ minWidth: '12rem' }} />
-                <Column field="destination.country" header="Country" style={{ minWidth: '6rem' }} />
-                {bookingType === 'sheduled'&&
-                  <Column header=""  style={{ minWidth: '10rem' }} body={viewBodyTemplate} />
-                }
-                {bookingType === 'active'&&
-                  <Column header=""  style={{ minWidth: '10rem' }} body={viewBodyTemplate} />
-                }
             </DataTable>
-
-            <Dialog visible={start} onHide={() => setStart(!start)}>
-                <p>Enter the code</p>
-                <form onSubmit={handleCodeSubmit}>
-                  <input className="code-input" type="text" required value={code} onChange={(e)=> setCode(e.target.value)}/>
-                  <button className="code-input-button" type="submit">Submit</button>
-                </form>
-            </Dialog>
         </div>
         }
         </>
-        
     );
 }

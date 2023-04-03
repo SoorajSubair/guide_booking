@@ -1,0 +1,134 @@
+
+@media (min-width: 992px){
+.checkout-body {
+    padding: 0 3rem 2rem;
+}
+}
+
+@media (min-width: 768px){
+.checkout-body {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1300px;
+    overflow-y: auto;
+    height: 100%;
+    padding: 0 2rem 2rem;
+    }
+    }
+
+/* @media (min-width: 768px){
+.checkout-body-container {
+    min-height: 100%;
+    display: flex;
+    padding: 0;
+    flex-direction: row;
+}
+} */
+
+
+
+.checkout-main{
+    padding: 1.5rem 1rem;
+}
+
+.booking-summary{
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.booking-summary-top{
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.booking-text-container{
+    margin-right: 1rem;
+}
+
+.Title-3a4H7 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+}
+
+.with-guide{
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1rem;
+    margin-top: 0.5rem;
+}
+
+.HostName-yZEpk {
+    color: #e71575;
+    font-weight: 600;
+}
+
+.booking-image-container{
+    flex: 0 0 5rem;
+    margin-left: auto;
+}
+
+.Image-z5qgP {
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.booking-summary-bottom{
+    font-weight: 500;
+    line-height: 1rem;
+    font-size: 1rem;
+}
+
+.checkoutPricingDetails-1UY0V {
+    border-top: 1px solid #eaeaea;
+    padding: 1rem 0 0.5rem;
+}
+
+.PriceRow-I3UVW {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    font-weight: 500;
+    color: #4a4a4a;
+}
+
+.Label-2CwWD, .Value-37DOt {
+    flex: 1 1 auto;
+    line-height: 1.5rem;
+    font-size: 1rem;
+}
+
+.Value-37DOt {
+    padding-left: 1rem;
+    text-align: right;
+}
+
+@media (min-width: 480px){
+.Value-37DOt {
+    padding-left: 0;
+}
+}
+
+.Title-lEYV8 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #4a4a4a;
+    padding-bottom: 1rem;
+}
+
+.SecureMessage-1Y4KG {
+    display: flex;
+    align-items: flex-start;
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+.LockIcon-3H3-i {
+    min-width: 16px;
+    margin-right: 0.5rem;
+    margin-top: 1px;
+}
+
+.paypal-button-number-1{
+    display: none!important;
+}

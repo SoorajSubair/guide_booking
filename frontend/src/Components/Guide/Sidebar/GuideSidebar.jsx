@@ -91,13 +91,13 @@ const GuideSidebar = () => {
 			url2: '/guide/profile/edit'
 		},
 		{
-			text: "Schedules",
-			url: '/guide/schedules',
+			text: "Bookings",
+			url: '/guide/bookings',
 			url2: ''
 		},
 		{
-			text: "Bookings",
-			url: '/guide/bookings',
+			text: "Payments",
+			url: '/guide/payments',
 			url2: ''
 		},
 		{

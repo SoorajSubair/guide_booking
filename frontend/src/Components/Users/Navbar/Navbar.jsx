@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react'
+import React,{useEffect, useState, useContext} from 'react'
 import './Navbar.css'
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
@@ -14,6 +14,7 @@ import { UserRefreshToken } from '../../../Utils/UserRefreshToken';
 import Swal from 'sweetalert2';
 import logo from '../../../Assets/images/logo.svg'
 import { useSelector } from 'react-redux';
+import { UserIsLoggedIn } from '../../../Context/UserIsLoggedIn';
 
 
 function NavBar() {
@@ -21,7 +22,8 @@ function NavBar() {
     const { image } = useSelector(state => state.user);
     const profileImage = `${baseUrl}${image}`
     const dispatch = useDispatch();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { isLoggedIn, setIsLoggedIn } = useContext(UserIsLoggedIn);
     const [isScrolled, setIsScrolled] = useState(false);
     window.onscroll = () => {
       
@@ -51,21 +53,27 @@ function NavBar() {
                       localStorage.setItem("user_prevUrl", window.location.pathname);
                       const access = user_authTokens?.access
                       const decodedToken = jwt_decode(access)
-                      dispatch(change({ username: decodedToken.username, image: decodedToken.image }));
+                      dispatch(change({ id: decodedToken.user_id ,username: decodedToken.username, image: decodedToken.image }));
                       setIsLoggedIn(true)
                   }
                 })
                 .catch((err) => {
                   localStorage.removeItem('user_authTokens');
                   localStorage.removeItem('user_prevUrl');
-                  dispatch(change({ username: null, image: null }));
+                  dispatch(change({ id: null ,username: null, image: null }));
                   setIsLoggedIn(false)
+                  if(window.location.pathname.includes('/checkout')){
+                    navigate('/login')
+                  }
                 });
             }else{
               localStorage.removeItem('user_authTokens');
               localStorage.removeItem('user_prevUrl');
-              dispatch(change({ username: null, image: null }));
+              dispatch(change({ id: null ,username: null, image: null }));
               setIsLoggedIn(false)
+              if(window.location.pathname.includes('/checkout')){
+                navigate('/login')
+              }
             }
     },[dispatch])
   
@@ -112,7 +120,7 @@ function NavBar() {
           <Navbar.Brand id="basic-nav-dropdown" ><img src={profileImage} alt='logo' style={{height:'50px', width:'50px', borderRadius:'50%', objectFit:'cover'}}></img>
           <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item>Profile</NavDropdown.Item>
-              <NavDropdown.Item>Bookings</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate('/bookings')}>Bookings</NavDropdown.Item>
               <NavDropdown.Item onClick={() => navigate('/chat')}>Chat</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={handleLogout} className='logout-dropdown'>Logout</NavDropdown.Item>

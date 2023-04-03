@@ -12,7 +12,7 @@ function AboutDestination() {
         <div className="about-container">
             <div>
                 <h2 className='about-heading'>What you can expect</h2>
-                <p className="about-para">{destination.about}</p>
+                <p className="about-para">{destination?.about}</p>
             </div>
         </div>
         <DestinationSlider/>

@@ -21,6 +21,12 @@ import GuideHome from './Pages/Guides/Home/GuideHome';
 import GuideSchedule from './Pages/Guides/Schedule/GuideSchedule';
 import ProfileEdit from './Pages/Guides/ProfileEdit/ProfileEdit';
 import Chat from './Pages/Users/Chat/Chat';
+import Checkout from './Pages/Users/Checkout/Checkout';
+import { UserIsLoggedInProvider } from './Context/UserIsLoggedIn';
+import AllBookings from './Pages/Users/AllBookings/AllBookings';
+import AdminBookings from './Pages/Admin/Bookings/AdminBookings';
+import Payments from './Pages/Admin/Payments/Payments';
+
 
 
 
@@ -31,6 +37,7 @@ function App() {
   return (
     <div className="App">
       <ResizeProvider>
+      <UserIsLoggedInProvider>
       <Router>
        <Routes>
 
@@ -38,8 +45,7 @@ function App() {
 
          <Route path="/admin" element={<Login/>} />
          <Route path="/admin/dashboard" element={<Dashboard/>} />
-         <Route path="/admin/bookings" element={<Dashboard/>} />
-         <Route path="/admin/payments" element={<Dashboard/>} />
+         <Route path="/admin/payments" element={<Payments/>} />
          <Route path="/admin/users" element={<Users/>} />
          <Route path="/admin/users/add" element={<UserAdd/>} />
          <Route path="/admin/guides" element={<Guides/>} />
@@ -48,6 +54,7 @@ function App() {
          <Route path="/admin/destination/add" element={<DestinationAdd/>} />
          <Route path="/admin/destinations/:destinationId" element={<DestinationView/>} />
          <Route path="/admin/destinations/update/:destinationId" element={<DestinationUpdate/>} />
+         <Route path="/admin/bookings" element={<AdminBookings/>} />
 
          {/* <------- User Routes -------> */}
 
@@ -56,19 +63,22 @@ function App() {
          <Route path="/signup" element={<Authentication/>} />
          <Route path="/destination/:destinationId" element={<Destination/>} />
          <Route path="/guide/:guideId" element={<Guide/>} />
+         <Route path="/checkout" element={<Checkout/>} />
          <Route path="/chat" element={<Chat/>} />
+         <Route path="/bookings" element={<AllBookings/>} />
 
          {/* <------- Guide Routes -------> */}
 
          <Route path="/guide" element={<GuideLogin/>} />
          <Route path="/guide/profile" element={<GuideHome/>} />
          <Route path="/guide/profile/edit" element={<ProfileEdit/>} />
-         <Route path="/guide/schedules" element={<GuideSchedule/>} />
+         <Route path="/guide/bookings" element={<GuideSchedule/>} />
         
 
 
         </Routes>
       </Router>
+      </UserIsLoggedInProvider>
       </ResizeProvider>
     
     </div>

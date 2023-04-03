@@ -231,7 +231,281 @@ def update_guide(request, pk):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def draft_booking(request):
+    user_id = request.data.get('user')
+    guide_id = request.data.get('guide')
+    destination_id = request.data.get('destination')
+    date = request.data.get('date')
+    print(date)
+    user = CustomUser.objects.get(id = user_id)
+    guide = CustomUser.objects.get(id = guide_id)
+    destination = Destination.objects.get(id = destination_id)
+    try:
+        booking = Booking.objects.get(user=user, is_booked=False)
+        booking.guide = guide
+        booking.destination = destination
+        booking.date = date
+        booking.save()
+        serializer = BookingSerializer(booking)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except:
+        serializer = BookingSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_booking(request, pk):
+    try:
+        user = CustomUser.objects.get(id = pk)
+        booking = Booking.objects.get(user=user, is_booked=False)
+        serializer = BookingGetSerializer(booking)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    except:
+        return Response('no draft booking', status=status.HTTP_400_BAD_REQUEST)
     
+@api_view(['PUT'])
+def payment_confirmed(request, pk):
+    booking = Booking.objects.get(id = pk)
+    booking.is_booked = True
+    booking.is_start_code = random.randint(100000, 999999)
+    booking.save()
+    payment = Payment.objects.create(booking=booking, method='PayPal')
+    serializer = PaymentSerializer(payment)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_all_bookings(request, pk):
+    user = CustomUser.objects.get(id = pk)
+    bookings = Booking.objects.filter(user = user, is_booked = True, is_declined=False, trip_ended=False).order_by('date')
+    if bookings:
+        serializer = BookingGetSerializer(bookings, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no bookings', status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_cancelled_bookings(request, pk):
+    user = CustomUser.objects.get(id = pk)
+    bookings = Booking.objects.filter(user = user, is_booked = True, is_declined=True).order_by('date')
+    if bookings:
+        serializer = BookingGetSerializer(bookings, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no bookings', status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_completed_bookings(request, pk):
+    user = CustomUser.objects.get(id = pk)
+    bookings = Booking.objects.filter(user = user, is_booked = True, trip_ended=True).order_by('date')
+    if bookings:
+        serializer = BookingGetSerializer(bookings, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no bookings', status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def cancel_booking(request, pk):
+    booking = Booking.objects.get(id = pk).order_by('date')
+    booking.is_declined = True
+    booking.save()
+    return Response("Trip Cancelled", status = status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_guide_upcomming_bookings(request, pk):
+    guide = CustomUser.objects.get(id = pk)
+    bookings = Booking.objects.filter(guide = guide, is_booked = True, trip_started = False).order_by('date')
+    if bookings:
+        serializer = BookingGetSerializer(bookings, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no bookings', status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_guide_completed_bookings(request, pk):
+    guide = CustomUser.objects.get(id = pk)
+    bookings = Booking.objects.filter(guide = guide, is_booked = True, trip_ended = True).order_by('date')
+    if bookings:
+        serializer = BookingGetSerializer(bookings, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no bookings', status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_guide_current_bookings(request, pk):
+    guide = CustomUser.objects.get(id = pk)
+    bookings = Booking.objects.filter(guide = guide, is_booked = True, trip_started = True, trip_ended = False).order_by('date')
+    if bookings:
+        serializer = BookingGetSerializer(bookings, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no bookings', status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated, IsGuide])
+def start_trip(request, pk):
+    trip = Booking.objects.get(id = pk)
+    code = request.data.get('code')
+    if code == trip.is_start_code:
+        trip.trip_started=True
+        trip.is_end_code = random.randint(100000, 999999)
+        trip.save()
+        return Response("Trip Started", status = status.HTTP_200_OK)
+    return Response('Incorrect Code', status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated, IsGuide])
+def end_trip(request, pk):
+    trip = Booking.objects.get(id = pk)
+    code = request.data.get('code')
+    if code == trip.is_end_code:
+        trip.trip_ended=True
+        trip.save()
+        guide_payment = GuidePayment.objects.create(booking=trip)
+        serializer = GuidePaymentSerializer(guide_payment)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response("incorrect code", status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def all_scheduled_bookings(request):
+    bookings = Booking.objects.filter(is_booked = True, trip_started = False).order_by('date')
+    if bookings:
+        serializer = BookingGetSerializer(bookings, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no bookings', status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def all_active_bookings(request):
+    bookings = Booking.objects.filter(is_booked = True, trip_started = True, trip_ended = False).order_by('date')
+    if bookings:
+        serializer = BookingGetSerializer(bookings, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no bookings', status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def all_completed_bookings(request):
+    bookings = Booking.objects.filter(is_booked = True, trip_ended = True).order_by('date')
+    if bookings:
+        serializer = BookingGetSerializer(bookings, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no bookings', status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def all_canceled_bookings(request):
+    bookings = Booking.objects.filter(is_booked = True, is_declined=True).order_by('date')
+    if bookings:
+        serializer = BookingGetSerializer(bookings, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no bookings', status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def received_payments(request):
+    payments = Payment.objects.filter(is_refunded=False, booking__is_declined=False).order_by('-id')
+    if payments:
+        serializer = PaymentGetSerializer(payments, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no payments', status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def refunded_payments(request):
+    payments = Payment.objects.filter(is_refunded=True).order_by('-id')
+    if payments:
+        serializer = PaymentGetSerializer(payments, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no payments', status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def pending_refunds(request):
+    payments = Payment.objects.filter(is_refunded=False, booking__is_declined=True).order_by('-id')
+    if payments:
+        serializer = PaymentGetSerializer(payments, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no payments', status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def paid_payments(request):
+    payments = GuidePayment.objects.filter(is_paid=True).order_by('-id')
+    if payments:
+        serializer = GuidePaymentGetSerializer(payments, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no payments', status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def pending_payments(request):
+    payments = GuidePayment.objects.filter(is_paid=False).order_by('-id')
+    if payments:
+        serializer = GuidePaymentGetSerializer(payments, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    else:
+        return Response('no payments', status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def pay_refund(request, pk):
+    payment = Payment.objects.get(id = pk)
+    user = payment.booking.user
+    amount = payment.booking.destination.fee
+    user.wallet = user.wallet + amount
+    user.save()
+    payment.is_refunded = True
+    payment.save()
+    return Response("refunded", status = status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def pay_payment(request, pk):
+    payment = GuidePayment.objects.get(id = pk)
+    guide = payment.booking.guide
+    amount = payment.amount
+    guide.wallet = guide.wallet + amount
+    guide.save()
+    payment.is_paid = True
+    payment.save()
+    return Response("paid", status = status.HTTP_200_OK)
+
+
+
+
+
 
     
 

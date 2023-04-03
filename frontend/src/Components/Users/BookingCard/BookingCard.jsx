@@ -3,32 +3,50 @@ import './BookingCard.css'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useGuide } from '../../../Context/GuideContext'
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { draftBooking } from '../../../Utils/Urls';
+import axios from '../../../Utils/axios'
+import moment from 'moment';
+
+
 
 function BookingCard() {
     
     const guide = useGuide()
+    const { id } = useSelector(state => state.user);
+    const navigate = useNavigate()
     const disabledDatesList = ["2023-03-27", "2023-03-28", "2023-03-31"];
-    const [selectedDate, setSelectedDate] = useState(null);
-    const isDateDisabled = (date) => {
-        const formattedDate = date.toISOString().slice(0, 10);
-        return date < new Date() || disabledDatesList.includes(formattedDate);
-      };
+    const [selectedDate, setSelectedDate] = useState(null)
+
+
+
+    const handleBooking = (guideId)=>{
+
+        const user_authTokens = JSON.parse(localStorage.getItem('user_authTokens'))
+        const access = user_authTokens?.access
+        const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
+        const data = {
+            guide: guide.id,
+            user: id,
+            destination: guide.destination.id,
+            date: formattedDate,
+          };
+          axios.post(draftBooking, data, {
+            headers: {"Authorization": `Bearer ${access}`,'Content-Type': 'multipart/form-data' },
+          })
+            .then((response) => {
+              if (response.status === 201 || response.status === 200) {
+                navigate(`/checkout`)
+              }
+              
+            })
+            .catch((error) => {
+                console.log(error.response.data);
+            })
+    }
   return (
-    // <div className='book-block-container book-block-container-fixed'>
-    //     <div className="book-block">
-    //         <div className="book-price">
-    //             <div className="price-detail">€17.79 per person</div>
-    //         </div>
-    //         <div>
-    //             <div className="date-selector">
-    //                 <button className='date-selector-button'>
-    //                     <div className="button-text">Select date</div>
-    //                 </button>
-    //             </div>
-    //         </div>
-    //     </div>
-      
-    // </div>
+
 
     <div className='chat-card-holder'>
     <div className="chat-card-container">
@@ -36,11 +54,6 @@ function BookingCard() {
             <div>
                 <h1 className="book-card-title"><strong>€{guide?.destination?.fee}</strong> for a day</h1>
             </div>
-            {/* <div className="chat-card-image">
-                <div className="chat-card-image-container">
-                    <img className='chat-card-avatar' src={avatar} />
-                </div>
-            </div> */}
         </div>
         <div className="date-selector">
            
@@ -52,8 +65,10 @@ function BookingCard() {
                 placeholderText="Select date"
             />
        </div>
-        <button className='chat-with-me'>Book Now</button>
-
+       {selectedDate ?
+        <button onClick={()=>handleBooking(guide?.id)} className='chat-with-me'>Book Now</button>
+        :
+        ""}
     </div> 
 </div>
   )

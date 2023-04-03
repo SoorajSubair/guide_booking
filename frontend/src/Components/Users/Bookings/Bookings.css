@@ -1,0 +1,141 @@
+.booking-container{
+    box-shadow: 0 6px 16px 0 rgb(0 0 0 / 15%);
+    /* height: calc(100vh - 81px); */
+    padding: 0;
+    display: flex;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.booking-master{
+    background: #fff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 320px;
+    border-right: 1px solid #eaeaea;
+}
+
+.bookings-header{
+    display: flex;
+    height: 3.5rem;
+    min-height: 3.5rem;
+    align-items: center;
+    border-bottom: 1px solid #eaeaea;
+    padding: 0 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Title-MBBEe {
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+.Action-24rBX {
+    color: #e71575;
+    margin-left: auto;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.Scroller-3PXJ1 {
+    overflow: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.Container-1G5cP {
+    margin-top: 4rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.SVG-Xp0aR {
+    display: flex;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.TextContainer-2_LWV {
+    margin-top: 1rem;
+    padding: 0 2rem;
+    text-align: center;
+}
+
+.Title-1gcCM {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 2rem;
+}
+
+.Text-1tW9S {
+    margin-top: 0.5rem;
+}
+.Paragraph-3uxbv {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    margin: 0;
+    word-break: break-word;
+    display: flex;
+    justify-content: center;
+}
+
+.Link-1XBPn {
+    color: #e71575;
+    font-weight: 600;
+}
+
+.guide-schedule-card .p-inputtext {
+    color: #151516;
+    background: #ffffff;
+    border: 1px solid #0e0e102e !important;
+}
+
+.user-card .p-datatable .p-datatable-tbody > tr > td:hover {
+    border-bottom: 1px solid #e71575!important;
+    background-color: #ffff;
+    color: #e71575!important;
+}
+
+.code-button {
+    background-color: #e71575;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    width: -webkit-fill-available;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0px;
+}
+
+.cancel-button {
+    background-color: #3d3d3d;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    width: -webkit-fill-available;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0px;
+}
+
+.pi-check-circle{
+    color: green;
+}
+
+.pi-times-circle{
+    color: red;
+}
