@@ -4,8 +4,13 @@ import { useSelector } from "react-redux";
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js'
 import axios from '../../../Utils/axios';
 import { useNavigate } from 'react-router-dom';
-import { paymentConfirmed, baseUrl, getBooking } from '../../../Utils/Urls';
+import { paymentConfirmed, baseUrl, getBooking, stripeCheckout, razorpayStartPayment, razorpayPaymentSuccess} from '../../../Utils/Urls';
 import Swal from 'sweetalert2';
+import Axios from "axios";
+import logo from '../../../Assets/images/logo.svg';
+
+// import { useLocation } from 'react-router-dom';
+// import QueryString from 'query-string';
 
 function PaymentComponent() {
 
@@ -15,6 +20,8 @@ function PaymentComponent() {
     const [booking, setBooking] = useState({})
     const [amount, setAmount] = useState('')
     const [paymentUrl, setPaymentUrl] = useState('') 
+
+    // const location = useLocation();
     
 
     useEffect(()=>{
@@ -34,6 +41,125 @@ function PaymentComponent() {
             })
         }
     },[url])
+
+    // useEffect(() => {
+	// 	// Check to see if this is a redirect back from Checkout
+	// 	// const query = new URLSearchParams(window.location.search);
+	// 	const values = QueryString.parse(location.search);
+
+	// 	if (values.success) {
+	// 		console.log(
+	// 			'Order placed! You will receive an email confirmation.'
+	// 		);
+	// 	}
+
+	// 	if (values.canceled) {
+	// 		console.log(
+	// 			"Order canceled -- continue to shop around and checkout when you're ready."
+	// 		);
+	// 	}
+	// }, []);
+
+
+// this function will handel payment when user submit his/her money
+// and it will confim if payment is successfull or not
+  const handlePaymentSuccess = async (response) => {
+    try {
+      let bodyData = new FormData();
+
+      // we will send the response we've got from razorpay to the backend to validate the payment
+      bodyData.append("response", JSON.stringify(response));
+
+      await Axios({
+        url: `${baseUrl}${razorpayPaymentSuccess}`,
+        method: "POST",
+        data: bodyData,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => {
+          console.log("Everything is OK!");
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Booked successfully, Enjoy your trip! ",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          navigate('/')
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(console.error());
+    }
+  };
+
+  // this will load a script tag which will open up Razorpay payment card to make //transactions
+  const loadScript = () => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    document.body.appendChild(script);
+  };
+
+  const showRazorpay = async () => {
+    const res = await loadScript();
+
+    let bodyData = new FormData();
+
+    // we will pass the amount and product name to the backend using form data
+    bodyData.append("amount", booking.destination.fee.toString());
+    bodyData.append("booking_id", booking.id);
+
+    const data = await Axios({
+      url: `${baseUrl}${razorpayStartPayment}`,
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: bodyData,
+    }).then((res) => {
+      return res;
+    });
+
+    // in data we will receive an object from the backend with the information about the payment
+    //that has been made by the user
+
+    var options = {
+      key_id: process.env.RAZORPAY_ID, // in react your environment variable must start with REACT_APP_
+      key_secret: process.env.RAZORPAY_ACCOUNT_ID,
+      amount: data.data.payment.amount,
+      currency: "INR",
+      name: "Locally Led",
+      description: "Test transaction",
+      image: logo, // add image url
+      order_id: data.data.payment.id,
+      handler: function (response) {
+        // we will handle success by calling handlePaymentSuccess method and
+        // will pass the response that we've got from razorpay
+        handlePaymentSuccess(response);
+      },
+      prefill: {
+        name: "User's name",
+        email: "User's email",
+        contact: "User's phone",
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+
+    var rzp1 = new window.Razorpay(options);
+    rzp1.open();
+  };
+
     
 
     return (
@@ -108,7 +234,7 @@ function PaymentComponent() {
                                     Swal.fire({
                                         position: "center",
                                         icon: "success",
-                                        title: "Enjoy your trip! ",
+                                        title: "Booked successfully, Enjoy your trip! ",
                                         showConfirmButton: false,
                                         timer: 1500,
                                       });
@@ -118,12 +244,17 @@ function PaymentComponent() {
                             })
                             .catch((err)=>{
                                 console.log(err.response.data)
-                            })
-                        
+                            })   
                     });
                     }}
                 />
-                </PayPalScriptProvider> 
+                </PayPalScriptProvider>
+                <button className='stripe-button' onClick={showRazorpay}>RazorPay</button>
+                {/* <form style={{marginTop:'0vh'}} action={`${baseUrl}${stripeCheckout}`}
+				method='POST' >
+				<button className='stripe-button' type='submit'>Stripe</button>
+			    </form> */}
+                
             </div>
         </div>
         </div>

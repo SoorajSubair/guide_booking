@@ -1,11 +1,11 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import './BookingCard.css'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useGuide } from '../../../Context/GuideContext'
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { draftBooking } from '../../../Utils/Urls';
+import { draftBooking,guideBookingDates } from '../../../Utils/Urls';
 import axios from '../../../Utils/axios'
 import moment from 'moment';
 
@@ -16,8 +16,20 @@ function BookingCard() {
     const guide = useGuide()
     const { id } = useSelector(state => state.user);
     const navigate = useNavigate()
-    const disabledDatesList = ["2023-03-27", "2023-03-28", "2023-03-31"];
+    const [disabledDatesList, setDisabeledDatesList] = useState([]);
     const [selectedDate, setSelectedDate] = useState(null)
+
+    useEffect(()=>{
+      // if(guide){
+        const url = `${guideBookingDates}${guide.id}`
+        axios.get(url,{
+          headers: {'Content-Type': 'multipart/form-data' },
+        })
+        .then((response)=>{
+          setDisabeledDatesList(response.data)
+        })
+      // }
+    },[guide])
 
 
 
@@ -43,6 +55,7 @@ function BookingCard() {
             })
             .catch((error) => {
                 console.log(error.response.data);
+                navigate('/login')
             })
     }
   return (

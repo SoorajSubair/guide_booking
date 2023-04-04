@@ -11,6 +11,10 @@ from .models import *
 from django.contrib.auth import get_user_model
 from .mixins import Messghandler
 import random
+import razorpay
+import json
+from datetime import datetime
+
 
 User = get_user_model()
 
@@ -34,6 +38,32 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
+import stripe
+from django.shortcuts import redirect
+from django.conf import settings
+from rest_framework.views import APIView
+
+stripe.api_key = settings.STRIPE_SECRETE_KEY
+
+class StripeCheckoutView(APIView):
+    def post(self, request):
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                line_items=[
+                    {
+                        # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                        'price': 'price_1Mt4d3SIJzgxW7EBbkGnJbbp',
+                        'quantity': 1,
+                    },
+                ],
+                mode='payment',
+                success_url=settings.SITE_URL + '/checkout/?success=true',
+                cancel_url=settings.SITE_URL + '/checkout/?canceled=true',
+            )
+            return redirect(checkout_session.url, code=303)
+        except:
+            return Response({"error":"something wrong"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
 @api_view(['POST'])
 def user_otp(request):
 
@@ -232,6 +262,13 @@ def update_guide(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def guide_booking_dates(request, pk):
+    guide = CustomUser.objects.get(id=pk)
+    bookings = Booking.objects.filter(guide=guide, is_booked=True)
+    booking_dates = [datetime.strftime(booking.date, "%Y-%m-%d") for booking in bookings]
+    return Response(booking_dates, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -269,6 +306,92 @@ def get_booking(request, pk):
         return Response(serializer.data, status = status.HTTP_200_OK)
     except:
         return Response('no draft booking', status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['POST'])
+def razorpay_start_payment(request):
+    # request.data is coming from frontend
+    amount = request.data['amount']
+    booking_id = request.data['booking_id']
+
+    # setup razorpay client this is the client to whome user is paying money that's you
+    client = razorpay.Client(auth=(settings.RAZORPAY_ID, settings.RAZORPAY_ACCOUNT_ID))
+
+    # create razorpay order
+    # the amount will come in 'paise' that means if we pass 50 amount will become
+    # 0.5 rupees that means 50 paise so we have to convert it in rupees. So, we will 
+    # mumtiply it by 100 so it will be 50 rupees.
+    payment = client.order.create({"amount": int(float(amount) * 100), 
+                                   "currency": "INR", 
+                                   "payment_capture": "1"})
+
+    # we are saving an order with isPaid=False because we've just initialized the order
+    # we haven't received the money we will handle the payment succes in next 
+    # function
+    booking = Booking.objects.get(id=booking_id)
+    booking.payment_id = payment['id']
+    booking.save()
+    serializer = BookingSerializer(booking)
+
+
+    data = {
+        "payment": payment,
+        "booking": serializer.data
+    }
+    return Response(data)
+
+
+@api_view(['POST'])
+def razorpay_payment_success(request):
+    # request.data is coming from frontend
+    res = json.loads(request.data["response"])
+
+    ord_id = ""
+    raz_pay_id = ""
+    raz_signature = ""
+
+    # res.keys() will give us list of keys in res
+    for key in res.keys():
+        if key == 'razorpay_order_id':
+            ord_id = res[key]
+        elif key == 'razorpay_payment_id':
+            raz_pay_id = res[key]
+        elif key == 'razorpay_signature':
+            raz_signature = res[key]
+
+    # get order by payment_id which we've created earlier with isPaid=False
+    booking = Booking.objects.get(payment_id=ord_id)
+
+    # we will pass this whole data in razorpay client to verify the payment
+    data = {
+        'razorpay_order_id': ord_id,
+        'razorpay_payment_id': raz_pay_id,
+        'razorpay_signature': raz_signature
+    }
+
+    
+    client = razorpay.Client(auth=(settings.RAZORPAY_ID, settings.RAZORPAY_ACCOUNT_ID))
+
+    # checking if the transaction is valid or not by passing above data dictionary in 
+    # razorpay client if it is "valid" then check will return None
+    check = client.utility.verify_payment_signature(data)
+
+    booking.is_booked = True
+    booking.is_start_code = random.randint(100000, 999999)
+    booking.save()
+    payment = Payment.objects.create(booking=booking, method='Razorpay')
+
+    if check is not None:
+        print("Redirect to error url or error page")
+        return Response({'error': 'Something went wrong'})
+
+    res_data = {
+        'message': 'payment successfully received!'
+    }
+
+    return Response(res_data)
+
+
     
 @api_view(['PUT'])
 def payment_confirmed(request, pk):

@@ -196,10 +196,18 @@ AUTH_USER_MODEL = 'API.CustomUser'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+#PayPal settings
 ACCOUNT_SID = config('ACCOUNT_SID')
-
 ACCOUNT_TOKEN = config('ACCOUNT_TOKEN')
+
+#Stripe settings
+STRIPE_SECRETE_KEY = config('STRIPE_SECRETE_KEY')
+
+#Razorpay settings
+RAZORPAY_ID = config('RAZORPAY_ID')
+RAZORPAY_ACCOUNT_ID = config('RAZORPAY_ACCOUNT_ID')
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY='same-origin-allow-popups'
 
+SITE_URL = 'http://localhost:3000'
 

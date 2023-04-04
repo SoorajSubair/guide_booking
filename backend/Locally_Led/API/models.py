@@ -46,7 +46,7 @@ class Booking(models.Model):
     destination = models.ForeignKey(Destination, models.CASCADE)
     date = models.DateField()
     is_booked = models.BooleanField(default=False)
-    # is_accepted = models.BooleanField(default=False)
+    payment_id = models.CharField(max_length=100, null=True, blank=True)
     is_declined = models.BooleanField(default=False)
     trip_started = models.BooleanField(default=False)
     trip_ended = models.BooleanField(default=False)

@@ -132,3 +132,18 @@
 .paypal-button-number-1{
     display: none!important;
 }
+
+.stripe-button{
+    font-weight: 900;
+    font-size: larger;
+    min-width: 150px;
+    max-width: 750px;
+    border-radius: 28px;
+    height: 55px;
+    vertical-align: top;
+    min-height: 40px;
+    max-height: 55px;
+    background-color: rgb(49 91 193)!important;
+}
+.stripe-button:hover{
+    background-color: rgb(41, 85, 194)!important;}

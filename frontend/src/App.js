@@ -26,6 +26,7 @@ import { UserIsLoggedInProvider } from './Context/UserIsLoggedIn';
 import AllBookings from './Pages/Users/AllBookings/AllBookings';
 import AdminBookings from './Pages/Admin/Bookings/AdminBookings';
 import Payments from './Pages/Admin/Payments/Payments';
+// import StripeCheckout from './Components/Users/PaymentComponent/StripeCheckout';
 
 
 
@@ -64,6 +65,7 @@ function App() {
          <Route path="/destination/:destinationId" element={<Destination/>} />
          <Route path="/guide/:guideId" element={<Guide/>} />
          <Route path="/checkout" element={<Checkout/>} />
+         {/* <Route path="/checkout/stripe" element={<StripeCheckout/>} /> */}
          <Route path="/chat" element={<Chat/>} />
          <Route path="/bookings" element={<AllBookings/>} />
 
