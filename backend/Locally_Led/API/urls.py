@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+from .classViews import *
 
 from rest_framework_simplejwt.views import (
     TokenRefreshView,TokenVerifyView
@@ -49,8 +50,10 @@ urlpatterns = [
     path('pending_payments/', pending_payments, name='pending_payments'),
     path('pay_refund/<int:pk>', pay_refund, name='pay_refund'),
     path('pay_payment/<int:pk>', pay_payment, name='pay_payment'),
+    path('guide_paid_payments/<int:pk>', guide_paid_payments, name='guide_paid_payments'),
+    path('guide_pending_payments/<int:pk>', guide_pending_payments, name='guide_pending_payments'),
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('stripe_checkout/', StripeCheckoutView.as_view(), name='stripe_checkout'),
     path('token/verify/', TokenVerifyView.as_view()),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
 ]

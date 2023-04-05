@@ -11,7 +11,7 @@ class ExtraDestinationImageSerializer(serializers.ModelSerializer):
 class GuideSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'first_name' ,'last_name', 'image']
+        fields = ['id', 'first_name' ,'last_name', 'image', 'wallet']
 
 class DestinationGetSerializer(serializers.ModelSerializer):
     extra_images = ExtraDestinationImageSerializer(source='extradestinationimage_set', many=True, read_only=True)
@@ -31,7 +31,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['id','first_name','last_name', 'username', 'email', 'password', 'phone','image','is_active','bio','destination']
+        fields = ['id','first_name','last_name', 'username', 'email', 'password', 'phone','image','is_active','bio','destination', 'wallet']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):

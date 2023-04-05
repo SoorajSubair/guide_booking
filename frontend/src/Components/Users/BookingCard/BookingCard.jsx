@@ -65,7 +65,7 @@ function BookingCard() {
     <div className="chat-card-container">
         <div className="chat-card-header">
             <div>
-                <h1 className="book-card-title"><strong>€{guide?.destination?.fee}</strong> for a day</h1>
+                <h1 className="book-card-title"><strong>${guide?.destination?.fee}</strong> for a day</h1>
             </div>
         </div>
         <div className="date-selector">

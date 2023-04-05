@@ -46,3 +46,5 @@ export const stripeCustomCheckout = "/api/stripe_custom_checkout/";
 export const razorpayStartPayment = "/api/razorpay_start_payment/";
 export const razorpayPaymentSuccess = "/api/razorpay_payment_success/";
 export const guideBookingDates = "/api/guide_booking_dates/";
+export const guidePaidPayments = "/api/guide_paid_payments/";
+export const guidePendingPayments = "/api/guide_pending_payments/";

@@ -186,11 +186,11 @@ function PaymentComponent() {
                         </li>
                         <li class="PriceRow-I3UVW">
                             <span class="Label-2CwWD">Subtotal</span>
-                            <span class="Value-37DOt">€{booking?.destination?.fee}</span>
+                            <span class="Value-37DOt">${booking?.destination?.fee}</span>
                         </li>
                         <li class="PriceRow-I3UVW">
                             <span class="Label-2CwWD Strong-3HSn_">Total</span>
-                            <span class="Value-37DOt Strong-3HSn_">€{booking?.destination?.fee}</span>
+                            <span class="Value-37DOt Strong-3HSn_">${booking?.destination?.fee}</span>
                         </li>
                     </ul>
                 </div>

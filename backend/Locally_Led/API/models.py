@@ -33,7 +33,7 @@ class CustomUser(AbstractUser):
     image = models.ImageField(upload_to="images",default="default.jpg")
     is_guide = models.BooleanField(default=False)
     bio = models.TextField(null =True, blank=True)
-    destination = models.ForeignKey(Destination, on_delete=models.CASCADE, null=True)
+    destination = models.ForeignKey(Destination, on_delete=models.CASCADE, null=True, blank=True)
     wallet = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
 
     def __str__(self):

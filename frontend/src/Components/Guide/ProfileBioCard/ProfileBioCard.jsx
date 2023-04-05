@@ -15,6 +15,7 @@ function ProfileBioCard() {
     const [bio, setBio] = useState('');
     const [destination, setDestination] = useState('');
     const [country, setCountry] = useState('');
+    const [wallet, setwallet] = useState('');
 
     useEffect(() => {
 
@@ -30,6 +31,7 @@ function ProfileBioCard() {
             setBio(response.data.bio)
             setDestination(response.data.destination.name)
             setCountry(response.data.destination.country)
+            setwallet(response.data.wallet)
         }
       });
 
@@ -45,6 +47,7 @@ function ProfileBioCard() {
             <p className='guide-about-details'><strong>Country:</strong> {country}</p>
             <p className='guide-about-details'><strong>Email:</strong> {email}</p>
             <p className='guide-about-details'><strong>Phone:</strong> {phone}</p>
+            <p className='guide-about-details'><strong>Wallet:</strong> {`$ ${wallet}`}</p>
         </div>
         <div className="bio-card">
             <h4 className='guide-bio-h4'>BIO</h4>
