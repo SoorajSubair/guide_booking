@@ -15,6 +15,7 @@ import random
 import razorpay
 import json
 from datetime import datetime
+from django.conf import settings
 
 
 User = get_user_model()
@@ -416,7 +417,7 @@ def guide_booking_dates(request, pk):
     """
 
     guide = CustomUser.objects.get(id=pk)
-    bookings = Booking.objects.filter(guide=guide, is_booked=True)
+    bookings = Booking.objects.filter(guide=guide, is_booked=True, is_declined = False, trip_ended=False)
     booking_dates = [datetime.strftime(booking.date, "%Y-%m-%d") for booking in bookings]
     return Response(booking_dates, status=status.HTTP_200_OK)
 
@@ -727,7 +728,7 @@ def cancel_booking(request, pk):
         Http404: If the booking with the specified pk does not exist.
     """
 
-    booking = Booking.objects.get(id = pk).order_by('date')
+    booking = Booking.objects.get(id = pk)
     booking.is_declined = True
     booking.save()
     return Response("Trip Cancelled", status = status.HTTP_200_OK)
@@ -755,7 +756,7 @@ def get_guide_upcomming_bookings(request, pk):
     """
 
     guide = CustomUser.objects.get(id = pk)
-    bookings = Booking.objects.filter(guide = guide, is_booked = True, trip_started = False).order_by('date')
+    bookings = Booking.objects.filter(guide = guide, is_declined=False, is_booked = True, trip_started = False).order_by('date')
     if bookings:
         serializer = BookingGetSerializer(bookings, many=True)
         return Response(serializer.data, status = status.HTTP_200_OK)
@@ -893,7 +894,7 @@ def all_scheduled_bookings(request):
     - Response object with error message 'no bookings' and HTTP status code 400 if no bookings are found.
     """
 
-    bookings = Booking.objects.filter(is_booked = True, trip_started = False).order_by('date')
+    bookings = Booking.objects.filter(is_booked = True, is_declined=False, trip_started = False).order_by('date')
     if bookings:
         serializer = BookingGetSerializer(bookings, many=True)
         return Response(serializer.data, status = status.HTTP_200_OK)
@@ -1104,7 +1105,7 @@ def guide_paid_payments(request, pk):
     Returns a list of all the guide payments for the guide with the given id that have been paid. 
     If no payments have been paid, returns a message indicating that there are no payments.
     """
-    
+
     guide = CustomUser.objects.get(id = pk)
     payments = GuidePayment.objects.filter(booking__guide=guide, is_paid=True).order_by('-id')
     if payments:

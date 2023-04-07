@@ -27,6 +27,7 @@ import AllBookings from './Pages/Users/AllBookings/AllBookings';
 import AdminBookings from './Pages/Admin/Bookings/AdminBookings';
 import Payments from './Pages/Admin/Payments/Payments';
 import Payment from './Pages/Guides/Payment/Payment';
+import GuideChat from './Pages/Guides/Chat/GuideChat';
 // import StripeCheckout from './Components/Users/PaymentComponent/StripeCheckout';
 
 
@@ -77,6 +78,7 @@ function App() {
          <Route path="/guide/profile/edit" element={<ProfileEdit/>} />
          <Route path="/guide/bookings" element={<GuideSchedule/>} />
          <Route path="/guide/payments" element={<Payment/>} />
+         <Route path="/guide/chat" element={<GuideChat/>} />
         
 
 

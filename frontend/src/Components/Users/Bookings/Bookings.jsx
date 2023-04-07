@@ -95,11 +95,16 @@ function Bookings() {
 
     const deleteBodyTemplate = (rowData) => {
         const bookingId = rowData.id
+        const tripStarted = rowData.trip_started
 
         return (
+            <>
+            {!tripStarted &&
             <div className="flex align-items-center gap-2" style={{display: 'flex',justifyContent: 'start',alignItems: 'center' }}>
                 <button className="cancel-button" onClick={() => handleCancel(bookingId)}>Cancel</button>
             </div>
+            }
+            </>
         )
     }
 

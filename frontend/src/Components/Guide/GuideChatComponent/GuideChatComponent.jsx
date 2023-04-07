@@ -1,9 +1,9 @@
 import React,{useState, useEffect} from 'react'
-import './Chat.css'
+import './GuideChat.css'
 import profile from '../../../Assets/images/profile.jpg'
 import back from '../../../Assets/images/left-arrow.svg'
 
-function ChatComponent() {
+function GuideChatComponent() {
 
     const [isSmallScreen, setIsSmallScreen] = useState(false);
     const [isListClicked, setIsListClicked] = useState(false);
@@ -11,7 +11,7 @@ function ChatComponent() {
   useEffect(() => {
     function handleResize() {
 
-      if (window.innerWidth < 600) {
+      if (window.innerWidth < 950) {
         setIsSmallScreen(true);
         setIsListClicked(false);
       } else {
@@ -25,7 +25,7 @@ function ChatComponent() {
   }, []);
 
   const handleChatList = () =>{
-    if(window.innerWidth < 600){
+    if(window.innerWidth < 950){
     setIsListClicked(true)
     setIsSmallScreen(false)
     }
@@ -37,7 +37,7 @@ function ChatComponent() {
   }
 
   return (
-    <div className='chat-container'>
+    <div className='guide-chat-container'>
         {!isListClicked &&
         <div className={isSmallScreen? "chat-list-container-small-device" : "chat-list-container"}>
             <div className="chat-list-header">
@@ -46,12 +46,12 @@ function ChatComponent() {
             <div className="chat-list-scroller">
                 <ul className="chat-list-ul">
                     <li className="chat-list-item">
-                        <a onClick={handleChatList} className="chat-list-item-info item-active">
+                        <a onClick={handleChatList} className="chat-list-item-info guide-item-active">
                             <div className="chat-item-avatar">
                                 <img className='chat-item-avatar-img' src={profile} alt="" />
                             </div>
                             <div className="chat-item-details">
-                                <div className="name-time">
+                                <div className="guide-name-time">
                                     <span className='name-chat'>Rocco</span>
                                     <span className='time-chat'>5 minutes ago</span>
                                 </div>
@@ -65,7 +65,7 @@ function ChatComponent() {
                                 <img className='chat-item-avatar-img' src={profile} alt="" />
                             </div>
                             <div className="chat-item-details">
-                                <div className="name-time">
+                                <div className="guide-name-time">
                                     <span className='name-chat'>Rocco</span>
                                     <span className='time-chat'>5 minutes ago</span>
                                 </div>
@@ -91,7 +91,7 @@ function ChatComponent() {
                 <div>
                     <ul className="chat-window-ul">
                         <li className="chat-window-li">
-                            <div className="chat-window-message">
+                            <div className="guide-chat-window-message">
                                 <p className="chat-window-message-para">Hi</p>
                                 <div className="chat-window-message-info">
                                     <span className='message-sender'>me</span>
@@ -127,4 +127,4 @@ function ChatComponent() {
   )
 }
 
-export default ChatComponent
+export default GuideChatComponent

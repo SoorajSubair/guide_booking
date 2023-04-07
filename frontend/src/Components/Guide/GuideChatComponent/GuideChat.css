@@ -1,10 +1,11 @@
-.chat-container{
+.guide-chat-container{
     box-shadow: 0 6px 16px 0 rgb(0 0 0 / 15%);
     height: calc(100vh - 81px);
     padding: 0;
     display: flex;
     max-width: 1600px;
     margin: 0 auto;
+    margin-top: 10px;
 }
 
 .chat-list-container{
@@ -96,7 +97,7 @@
     background-color: #f8f8f8;
 }
 
-.item-active{
+.guide-item-active{
     background-color: #f8f8f8;
     position: relative;
     text-decoration: none;
@@ -104,14 +105,14 @@
 
 
 
-.item-active::before{
+.guide-item-active::before{
     content: "";
     width: 4px;
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
-    background-color: #e71575;
+    background-color: #696CFF;
 }
 
 .chat-item-avatar{
@@ -138,11 +139,11 @@
     flex: 1 1 0%;
 }
 
-.name-time{
+.guide-name-time{
     display: flex;
     align-items: center;
     gap: 5px;
-    color: #e71575;
+    color: #696CFF;
 }
 
 .name-chat{
@@ -203,6 +204,7 @@
     display: flex;
     border-bottom: 1px solid #eaeaea;
     align-items: center;
+    background-color: #fff;
 }
 
 @media (min-width: 768px){
@@ -262,10 +264,10 @@
     margin-bottom: auto;
 }
 
-.chat-window-message{
+.guide-chat-window-message{
     display: flex;
     flex-direction: column;
-    background-color: #e71575;
+    background-color: #696CFF;
     color: #ffffff;
     padding: 1rem 1rem 0.5rem;
     max-width: 90%;
@@ -278,12 +280,12 @@
 }
 
 @media (min-width: 768px){
-.chat-window-message {
+.guide-chat-window-message {
     max-width: 60%;
 }
 }
 
-.chat-window-message::before{
+.guide-chat-window-message::before{
     content: "";
     width: 13px;
     height: 1px;
@@ -337,7 +339,7 @@
     margin-left: auto;
 }
 
-.chat-window-message::after{
+.guide-chat-window-message::after{
     content: "";
     width: 0;
     height: 0;
@@ -345,7 +347,7 @@
     bottom: 0.5rem;
     left: auto;
     right: -11px;
-    border-color: transparent transparent transparent #e71575;
+    border-color: transparent transparent transparent #696CFF;
     border-style: solid;
     border-width: 13px 0 0 13px;
 }
