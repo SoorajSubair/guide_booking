@@ -16,6 +16,8 @@ import razorpay
 import json
 from datetime import datetime
 from django.conf import settings
+from django.db.models import Max
+
 
 
 User = get_user_model()
@@ -1113,6 +1115,43 @@ def guide_paid_payments(request, pk):
         return Response(serializer.data, status = status.HTTP_200_OK)
     else:
         return Response('no payments', status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_chat_list(request, pk):
+    user = CustomUser.objects.get(id = pk)
+    chats = Chat.objects.filter(user = user).annotate(latest_message_time=Max('messages__created_at')).order_by('-latest_message_time')
+    serializer = ChatSerializer(chats, many=True)
+    return Response(serializer.data, status = status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_chat_guide(request, pk):
+    chat = Chat.objects.get(id = pk)
+    serializer = ChatSerializer(chat)
+    return Response(serializer.data, status = status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def guide_chat_list(request, pk):
+    guide = CustomUser.objects.get(id = pk)
+    chats = Chat.objects.filter(guide = guide).annotate(latest_message_time=Max('messages__created_at')).order_by('-latest_message_time')
+    serializer = ChatSerializer(chats, many=True)
+    return Response(serializer.data, status = status.HTTP_200_OK)
+
+@api_view(['POST'])
+def create_or_start_chat(request):
+    userId = request.data.get('userId')
+    guideId = request.data.get('guideId')
+    
+    user = CustomUser.objects.get(id = userId)
+    guide = CustomUser.objects.get(id = guideId)
+    chat = Chat.objects.get_or_create(user = user, guide = guide)
+    chat = Chat.objects.get(user = user, guide = guide)
+    serializer = ChatSerializer(chat)
+    return Response(serializer.data, status = status.HTTP_200_OK)
+
 
 
 

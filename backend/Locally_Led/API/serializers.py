@@ -140,3 +140,20 @@ class GuidePaymentGetSerializer(serializers.ModelSerializer):
         model = GuidePayment
         fields = '__all__'
 
+
+class ChatSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer(read_only=True)
+    guide = CustomUserSerializer(read_only=True)
+
+    class Meta:
+        model = Chat
+        fields = ['id', 'user', 'guide', 'created_at', 'last_message_time']
+
+class MessageSerializer(serializers.ModelSerializer):
+    chat = ChatSerializer(read_only=True)
+    sender = CustomUserSerializer(read_only=True)
+
+    class Meta:
+        model = Message
+        fields = '__all__'
+

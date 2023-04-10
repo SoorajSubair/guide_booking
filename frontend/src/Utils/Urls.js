@@ -48,3 +48,7 @@ export const razorpayPaymentSuccess = "/api/razorpay_payment_success/";
 export const guideBookingDates = "/api/guide_booking_dates/";
 export const guidePaidPayments = "/api/guide_paid_payments/";
 export const guidePendingPayments = "/api/guide_pending_payments/";
+export const userChatList = "/api/user_chat_list/";
+export const guideChatList = "/api/guide_chat_list/";
+export const userChatGuide = "/api/user_chat_guide/";
+export const createOrStartChat = "/api/create_or_start_chat/";

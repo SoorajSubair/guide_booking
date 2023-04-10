@@ -69,6 +69,7 @@ function App() {
          <Route path="/checkout" element={<Checkout/>} />
          {/* <Route path="/checkout/stripe" element={<StripeCheckout/>} /> */}
          <Route path="/chat" element={<Chat/>} />
+         <Route path="/chat/:chatId" element={<Chat/>} />
          <Route path="/bookings" element={<AllBookings/>} />
 
          {/* <------- Guide Routes -------> */}
@@ -79,6 +80,7 @@ function App() {
          <Route path="/guide/bookings" element={<GuideSchedule/>} />
          <Route path="/guide/payments" element={<Payment/>} />
          <Route path="/guide/chat" element={<GuideChat/>} />
+         <Route path="/guide/chat/:chatId" element={<GuideChat/>} />
         
 
 

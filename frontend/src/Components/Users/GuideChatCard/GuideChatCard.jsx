@@ -1,11 +1,35 @@
 import React from 'react'
 import './GuideChatCard.css'
 import { useGuide } from '../../../Context/GuideContext'
-import { baseUrl } from '../../../Utils/Urls'
+import { baseUrl, createOrStartChat } from '../../../Utils/Urls'
+import { useSelector } from 'react-redux';
+import axios from '../../../Utils/axios'
+import { useNavigate } from 'react-router-dom';
 
 function GuideChatCard() {
 
     const guide = useGuide()
+    const  userId  = useSelector(state => state.user.id);
+    const guideId = guide.id
+    const navigate = useNavigate();
+
+    const handleChat = () =>{
+        const data = {
+            userId,
+            guideId
+        }
+
+        axios.post(createOrStartChat, data, {
+            headers: {'Content-Type': 'multipart/form-data' },
+        })
+        .then((response) => {
+            navigate(`/chat/${response.data.id}`)
+        })
+        .catch((e) =>{
+            console.log(e.response.data)
+        })
+
+    }
 
   return (
     <div className='chat-card-holder'>
@@ -44,7 +68,7 @@ function GuideChatCard() {
                     <span className="guide-text">Response time <strong>less than 10 hours</strong></span>
                 </span>
             </p>
-            <button className='chat-with-me'>Chat with me</button>
+            <button onClick={handleChat} className='chat-with-me'>Chat with me</button>
 
         </div> 
     </div>

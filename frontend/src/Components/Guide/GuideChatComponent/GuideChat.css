@@ -1,9 +1,9 @@
 .guide-chat-container{
     box-shadow: 0 6px 16px 0 rgb(0 0 0 / 15%);
-    height: calc(100vh - 81px);
+    height: calc(100vh - 120px);
     padding: 0;
     display: flex;
-    max-width: 1600px;
+    width: 100%;
     margin: 0 auto;
     margin-top: 10px;
 }
@@ -137,10 +137,12 @@
     margin-left: 1rem;
     min-width: 0;
     flex: 1 1 0%;
+    align-items: flex-start;
 }
 
 .guide-name-time{
-    display: flex;
+    /* display: flex; */
+    display: contents;
     align-items: center;
     gap: 5px;
     color: #696CFF;
@@ -177,7 +179,7 @@
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    height: calc(100vh - 65px);
+    height: 100%;
 }
 
 @media (min-width: 768px){
@@ -240,6 +242,16 @@
     -webkit-overflow-scrolling: touch;
     flex: 1 1 0%;
 }
+
+.chat-window-scroller::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .chat-window-scroller {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 
 .chat-window-background{
     background-color: #f8f8f8;
@@ -398,6 +410,8 @@
     max-height: 10rem;
     resize: none;
     height: 56px;
+    background: white;
+    color: #000!important;
 }
 
 .chat-send-button{

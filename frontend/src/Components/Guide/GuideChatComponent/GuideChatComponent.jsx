@@ -1,12 +1,24 @@
-import React,{useState, useEffect} from 'react'
+import React,{useState, useEffect, useRef} from 'react'
 import './GuideChat.css'
-import profile from '../../../Assets/images/profile.jpg'
 import back from '../../../Assets/images/left-arrow.svg'
+import GuideChatList from './GuideChatList';
+import { useParams } from 'react-router-dom';
+import axios from '../../../Utils/axios'
+import { userChatGuide, baseUrl } from '../../../Utils/Urls';
+import { useSelector } from 'react-redux';
+import WebSocketInstance from '../../../Utils/websocket.js';
 
 function GuideChatComponent() {
 
     const [isSmallScreen, setIsSmallScreen] = useState(false);
     const [isListClicked, setIsListClicked] = useState(false);
+    const { chatId } = useParams();
+    const [messages, setMessages] = useState([]);
+    const [message, setMessage] = useState('');
+    const [url, setUrl] = useState('')
+    const { id } = useSelector(state => state.user);
+    const [chat, setChat] = useState({});
+    const messagesEndRef = useRef(null);
 
   useEffect(() => {
     function handleResize() {
@@ -24,12 +36,83 @@ function GuideChatComponent() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleChatList = () =>{
-    if(window.innerWidth < 950){
-    setIsListClicked(true)
-    setIsSmallScreen(false)
+  useEffect(()=>{
+    scrollToBottom();
+  })
+
+  useEffect(()=>{
+        if(chatId){
+            setUrl(`${userChatGuide}${chatId}`)
+        }
+    },[chatId])
+
+    useEffect(() => {
+        if(url){
+        const user_authTokens = JSON.parse(localStorage.getItem('user_authTokens'))
+        const access = user_authTokens?.access
+        
+        axios.get(url, {
+            headers: {"Authorization": `Bearer ${access}`,'Content-Type': 'multipart/form-data' },
+        })
+        .then((response) => {
+            setChat(response.data)
+        })
+        .catch((e) =>{
+            console.log(e.response.data)
+        })
     }
-  }
+    },[url])
+
+    useEffect(() => {
+      // if(chatId){
+      initialiseChat();
+      // }
+  }, [chatId]);
+
+  const initialiseChat = () => {
+      waitForSocketConnection(() => {
+          WebSocketInstance.addCallbacks(setMessages, addMessage);
+          WebSocketInstance.fetchMessages(chatId);
+      });
+      WebSocketInstance.connect(chatId);
+  };
+
+  const waitForSocketConnection = (callback) => {
+      setTimeout(() => {
+          if (WebSocketInstance.state() === 1) {
+              console.log("Connection is made");
+              callback();
+              return;
+          } else {
+              console.log("wait for connection...");
+              waitForSocketConnection(callback);
+          }
+      }, 100);
+  };
+
+  const addMessage = (message) => {
+      setMessages(prevMessages => [...prevMessages, message]);
+  };
+
+  const messageChangeHandler = (event) => {
+      setMessage(event.target.value);
+  };
+
+  const sendMessageHandler = (e) => {
+      e.preventDefault();
+      const messageObject = {
+          from: id,
+          content: message,
+          chatId: chatId
+      };
+      WebSocketInstance.newChatMessage(messageObject);
+      setMessage('');
+  };
+
+  const scrollToBottom = () => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
+    }
+
 
   const handleGoBack = () =>{
     setIsListClicked(false)
@@ -39,90 +122,50 @@ function GuideChatComponent() {
   return (
     <div className='guide-chat-container'>
         {!isListClicked &&
-        <div className={isSmallScreen? "chat-list-container-small-device" : "chat-list-container"}>
-            <div className="chat-list-header">
-                <h3 className="chat-list-h3">Messages</h3>
-            </div>
-            <div className="chat-list-scroller">
-                <ul className="chat-list-ul">
-                    <li className="chat-list-item">
-                        <a onClick={handleChatList} className="chat-list-item-info guide-item-active">
-                            <div className="chat-item-avatar">
-                                <img className='chat-item-avatar-img' src={profile} alt="" />
-                            </div>
-                            <div className="chat-item-details">
-                                <div className="guide-name-time">
-                                    <span className='name-chat'>Rocco</span>
-                                    <span className='time-chat'>5 minutes ago</span>
-                                </div>
-                                <div className="last-message"></div>
-                            </div>
-                        </a>
-                    </li>
-                    <li className="chat-list-item">
-                        <a className="chat-list-item-info">
-                            <div className="chat-item-avatar">
-                                <img className='chat-item-avatar-img' src={profile} alt="" />
-                            </div>
-                            <div className="chat-item-details">
-                                <div className="guide-name-time">
-                                    <span className='name-chat'>Rocco</span>
-                                    <span className='time-chat'>5 minutes ago</span>
-                                </div>
-                                <div className="last-message"></div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <GuideChatList isSmallScreen={isSmallScreen} setIsListClicked={setIsListClicked} setIsSmallScreen={setIsSmallScreen}/>
         }
-
+        {chatId &&
         <div className={isSmallScreen ? "chat-window-container-small-device" : "chat-window-container"}>
             
             <div className="chat-window-header">
                 
-                {isListClicked && <img onClick={handleGoBack} style={{height:"100%"}} src={back} alt="" />}
+                {isListClicked && <img onClick={handleGoBack} style={{height:"100%"}} src={back} alt="back button" />}
                 
-                <img src={profile} alt="" className="chat-window-header-avatar" />
-                <h3 className="chat-window-header-h3">Rocco</h3>
+                <img src={`${baseUrl}${chat?.user?.image}`} alt="user image" className="chat-window-header-avatar" />
+                <h3 className="chat-window-header-h3">{chat?.user?.first_name}</h3>
             </div>
             <div className="chat-window-scroller chat-window-background">
-                <div>
+                <div ref={messagesEndRef}>
                     <ul className="chat-window-ul">
-                        <li className="chat-window-li">
-                            <div className="guide-chat-window-message">
-                                <p className="chat-window-message-para">Hi</p>
-                                <div className="chat-window-message-info">
-                                    <span className='message-sender'>me</span>
-                                    <span className="message-date-sented"> • 14:43 30 Mar 2023</span>
+                    {[...new Set(messages.map((message) => message.id))].map((messageId) => {
+                            const message = messages.find((message) => message.id === messageId);
+                            const dt = new Date(message.created_at);
+                            const formattedDate = `${dt.getHours()}:${dt.getMinutes()} ${dt.getDate()} ${dt.toLocaleString('default', { month: 'short' })} ${dt.getFullYear()}`;
+                            return(
+                            <li key={message.id} className="chat-window-li">
+                                <div className={message.senderId === id ? "guide-chat-window-message": "chat-window-message-sender"}>
+                                    <p className="chat-window-message-para">{message.content}</p>
+                                    <div className="chat-window-message-info">
+                                        <span className='message-sender'>{message.senderId === id ? 'me': message.sender}</span>
+                                        <span className={message.senderId === id ? "message-date-sented" : "message-date-sented-darker"}> • {formattedDate}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-
-                        <li className="chat-window-li">
-                            <div className="chat-window-message-sender">
-                                <p className="chat-window-message-para">We are proud to be part of a movement that prioritizes purpose beyond profit and are ready to put our words into action. Being B Corp is a process, not a destination. Discover more about our B Corp journey and how we intend to change the way we travel.</p>
-                                <div className="chat-window-message-info">
-                                    <span className='message-sender'>Rocco</span>
-                                    <span className="message-date-sented"> • 14:45 30 Mar 2023</span>
-                                </div>
-                            </div>
-                        </li>
-
+                            </li>
+                            )
+                    })}
                     </ul>
                 </div>
             </div>
             <div className="chat-window-input-container">
-                <form action="" className="chat-window-input-form">
-                    <textarea placeholder='write a message..' className='chat-window-input-textarea'></textarea>
+                <form onSubmit={sendMessageHandler} className="chat-window-input-form">
+                    <input type='text' placeholder='write a message..' className='chat-window-input-textarea' value={message} onChange={messageChangeHandler}></input>
                     <button className="chat-send-button">
                     <svg fill="#6B9682" width="24" height="24" viewBox="0 0 24 24"><g><circle cx="12" cy="12" r="12"></circle><path d="M 12 6 L 12 18 M 6 12 L 18 12" stroke="white" stroke-width="2"></path></g></svg>
                     </button>
                 </form>
             </div>
         </div>
-      
+        }
     </div>
   )
 }
