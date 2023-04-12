@@ -3,7 +3,7 @@ import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
 
 
-const PieChart = () => {
+const PieChart = (props) => {
     const option = {
         color: [
             new echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -16,16 +16,6 @@ const PieChart = () => {
                     color: "#42B5F2"
                 }
             ]),
-            // new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            //     {
-            //         offset: 0,
-            //         color: "#BC1FD7",
-            //     },
-            //     {
-            //         offset: 1,
-            //         color: "#7F1DD1",
-            //     }
-            // ]),
             new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                 {
                     offset: 0,
@@ -36,16 +26,6 @@ const PieChart = () => {
                     color: "#EB6B36",
                 }
             ]),
-            // new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            //     {
-            //         offset: 0,
-            //         color: "#D131BE",
-            //     },
-            //     {
-            //         offset: 1,
-            //         color: "#BF1575",
-            //     }
-            // ]),
         ],
         series: [
             {
@@ -55,8 +35,6 @@ const PieChart = () => {
                 avoidLabelOverlap: false,
                 itemStyle : {
                     borderRadius: 20,
-                    // borderColor: "black",
-                    // borderWidth: 5,
                 },
                 label: {
                     show: false,
@@ -70,10 +48,8 @@ const PieChart = () => {
                     }
                 },
                 data: [
-                    { value: 2190, name: "RazorPay" },
-                    { value: 735, name: "PayPal" },
-                    // { value: 580, name: "Email" },
-                    // { value: 484, name: "Union Ads" },
+                    { value: props.razorpay, name: "RazorPay" },
+                    { value: props.paypal, name: "PayPal" },
                 ]
             }
         ]

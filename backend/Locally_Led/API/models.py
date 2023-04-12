@@ -4,7 +4,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models import JSONField
 from decimal import Decimal
 from django.db.models import Max
-
+from datetime import date, timedelta
+from calendar import monthrange
 
 
 class Destination(models.Model):
@@ -59,6 +60,33 @@ class Payment(models.Model):
     booking = models.OneToOneField(Booking, on_delete=models.CASCADE, related_name='payment')
     is_refunded = models.BooleanField(default=False)
     method = models.CharField(max_length=100)
+
+    @classmethod
+    def get_revenue_details(cls, requested_data):
+        today = date.today()
+        if requested_data == 'daily':
+            dates = [today - timedelta(days=i) for i in range(7)]
+            revenue = []
+            for d in dates:
+                bookings = Booking.objects.filter(date=d, payment__is_refunded=False)
+                revenue.append('{:.2f}'.format(sum([b.destination.fee for b in bookings])))
+            dates = [d.strftime('%d-%m') for d in dates]
+            return {'lable': dates, 'revenue': revenue}
+        elif requested_data == 'monthly':
+            months = []
+            revenue = []
+            today = date.today()
+            for i in range(12):
+                # Get the first day of the month
+                start_date = date(today.year, i+1, 1)
+                # Get the last day of the month
+                end_date = date(today.year, i+1, monthrange(today.year, i+1)[1])
+                bookings = Booking.objects.filter(date__range=[start_date, end_date], payment__is_refunded=False)
+                revenue.append('{:.2f}'.format(sum([b.destination.fee for b in bookings])))
+                # Get the name of the month
+                month_name = start_date.strftime('%b')
+                months.append(month_name)
+            return {'lable': months, 'revenue': revenue}
 
 
 class GuidePayment(models.Model):

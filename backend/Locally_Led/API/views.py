@@ -16,7 +16,7 @@ import razorpay
 import json
 from datetime import datetime
 from django.conf import settings
-from django.db.models import Max
+from django.db.models import Max,Sum
 
 
 
@@ -1152,7 +1152,51 @@ def create_or_start_chat(request):
     serializer = ChatSerializer(chat)
     return Response(serializer.data, status = status.HTTP_200_OK)
 
+@api_view(['GET'])
+# @permission_classes([IsAdminUser])
+def dashboard_payments_details(request):
+    payments = Payment.objects.all()
+    summary = PaymentDetailSerializer.get_summary(payments)
+    data = {'summary': summary}
+    return Response(data)
 
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def dashboard_count_details(request):
+    total_destinations = Destination.objects.count()
+    total_guides = CustomUser.objects.filter(is_guide=True).count()
+    total_bookings = Booking.objects.filter(is_booked=True, is_declined=False).count()
+    total_canceled_bookings = Booking.objects.filter(is_booked=True, is_declined=True).count()
+    paypal_payments = Payment.objects.filter(method='PayPal', is_refunded=False)\
+                      .aggregate(total=Sum('booking__destination__fee'))['total']
+    razorpay_payments = Payment.objects.filter(method='Razorpay', is_refunded=False)\
+                      .aggregate(total=Sum('booking__destination__fee'))['total']
+    stats = {
+            'total_destinations': total_destinations,
+            'total_guides': total_guides,
+            'total_bookings': total_bookings,
+            'total_canceled_bookings': total_canceled_bookings,
+            'paypal_payments': paypal_payments,
+            'razorpay_payments': razorpay_payments,
+        }
+
+    serializer = StatsSerializer(stats)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def revenue_chart(request):
+    data = request.data.get('range')
+    daily_revenue = Payment.get_revenue_details(data)
+    return Response(daily_revenue)
+
+@api_view(['Get'])
+def get_destination_search(request):
+    destinations = Destination.objects.all()
+    destinations = DestinationSearchSerializer(destinations,many=True)
+    return Response(destinations.data, status = status.HTTP_200_OK)
 
 
 

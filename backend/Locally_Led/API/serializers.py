@@ -157,3 +157,62 @@ class MessageSerializer(serializers.ModelSerializer):
         model = Message
         fields = '__all__'
 
+class PaymentDetailSerializer(serializers.ModelSerializer):
+    revenue = serializers.SerializerMethodField()
+    expenses = serializers.SerializerMethodField()
+    refunds = serializers.SerializerMethodField()
+    profit = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Payment
+        fields = ['revenue', 'expenses', 'refunds', 'profit']
+
+    def get_revenue(self, obj):
+        return obj.booking.destination.fee if not obj.is_refunded else 0.00
+
+    def get_expenses(self, obj):
+        guide_payments = GuidePayment.objects.filter(booking=obj.booking, is_paid=True)
+        return sum(gp.amount for gp in guide_payments)
+
+    def get_refunds(self, obj):
+        return obj.booking.destination.fee if obj.is_refunded else 0.00
+
+    def get_profit(self, obj):
+        revenue = self.get_revenue(obj)
+        expenses = self.get_expenses(obj)
+        refunds = self.get_refunds(obj)
+        return Decimal(revenue) - (Decimal(expenses) + Decimal(refunds))
+    
+    @classmethod
+    def get_summary(cls, queryset):
+        revenue = 0
+        expenses = 0
+        refunds = 0
+        profit = 0
+
+        for payment in queryset:
+            revenue += payment.booking.destination.fee if not payment.is_refunded else 0
+            expenses += sum(gp.amount for gp in GuidePayment.objects.filter(booking=payment.booking, is_paid=True))
+            refunds += payment.booking.destination.fee if payment.is_refunded else 0
+            profit += cls().get_profit(payment)
+
+        return {
+            'revenue': "{:.2f}".format(revenue),
+            'expenses': "{:.2f}".format(expenses),
+            'refunds': "{:.2f}".format(refunds),
+            'profit': "{:.2f}".format(profit)
+        }
+    
+class StatsSerializer(serializers.Serializer):
+    total_destinations = serializers.IntegerField()
+    total_guides = serializers.IntegerField()
+    total_bookings = serializers.IntegerField()
+    total_canceled_bookings = serializers.IntegerField()
+    paypal_payments = serializers.DecimalField(max_digits=8, decimal_places=2)
+    razorpay_payments = serializers.DecimalField(max_digits=8, decimal_places=2)
+
+class DestinationSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Destination
+        fields = ['id', 'name', 'country']
+

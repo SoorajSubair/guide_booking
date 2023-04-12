@@ -1,6 +1,31 @@
+import React, { useState, useEffect } from 'react'
 import ReactECharts from 'echarts-for-react'
 import * as echarts from 'echarts'
+import axios from '../../../Utils/axios'
+import { getRevenue } from '../../../Utils/Urls'
+
 const MainChart = () => {
+
+    const[lable, setLable] = useState([])
+    const [revenue, setRevenue] = useState([])
+    const [range, setRange] = useState('daily');
+
+    useEffect(()=>{
+        const user_authTokens = JSON.parse(localStorage.getItem('authTokens'))
+        const access = user_authTokens?.access
+        const data = {range}
+        axios.post(getRevenue, data, {
+            headers: {"Authorization": `Bearer ${access}`,'Content-Type': 'multipart/form-data' },
+          })
+            .then((response) => {
+              setLable(response.data.lable)
+              setRevenue(response.data.revenue)
+              
+            })
+            .catch((error)=>{
+              console.log(error.response.data)
+            })
+    },[range])
 
     const option = {
         color: ['#696CFF'],
@@ -31,7 +56,7 @@ const MainChart = () => {
             {
                 type: "category",
                 boundaryGap: false,
-                data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+                data: lable
             }
         ],
         yAxis: [
@@ -76,14 +101,24 @@ const MainChart = () => {
                     focus: "series",
                 },
                 showSymbol: false,
-                data: [28000, 19000, 32000, 18000, 41000, 30000, 26000]
+                data: revenue
             }
         ]
     }
 
     return (
-        <ReactECharts option={option}
-        />
+        <>
+        <div className="main-chart-title">
+            <span style={{textTransform:"capitalize"}}>{range} Revenue</span>
+            <div className='main-chat-filter'>
+            <select onChange={(e)=>{setRange(e.target.value)}}>
+              <option value="daily">Daily</option>
+              <option value="monthly">Monthy</option>
+            </select>
+          </div>
+          </div>
+        <ReactECharts option={option}/>
+        </>
     )
 }
 

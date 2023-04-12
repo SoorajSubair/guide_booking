@@ -52,3 +52,7 @@ export const userChatList = "/api/user_chat_list/";
 export const guideChatList = "/api/guide_chat_list/";
 export const userChatGuide = "/api/user_chat_guide/";
 export const createOrStartChat = "/api/create_or_start_chat/";
+export const getAllPayments = "/api/dashboard_payments_details/";
+export const getAllStats = "/api/dashboard_count_details/";
+export const getRevenue = "/api/revenue_chart/";
+export const getDestinationSearch = "/api/get_destination_search/";
