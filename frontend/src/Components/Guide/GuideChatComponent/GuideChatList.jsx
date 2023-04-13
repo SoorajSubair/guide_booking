@@ -1,5 +1,4 @@
 import React,{useState, useEffect} from 'react'
-import profile from '../../../Assets/images/profile.jpg'
 import './GuideChat.css'
 import axios from '../../../Utils/axios'
 import { guideChatList, baseUrl } from '../../../Utils/Urls';
@@ -16,7 +15,7 @@ function GuideChatList(props) {
 
     useEffect(() => {
         if(url){
-        const user_authTokens = JSON.parse(localStorage.getItem('user_authTokens'))
+        const user_authTokens = JSON.parse(localStorage.getItem('guide_authTokens'))
         const access = user_authTokens?.access
         
         axios.get(url, {

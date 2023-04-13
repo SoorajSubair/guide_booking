@@ -1106,6 +1106,7 @@ def guide_paid_payments(request, pk):
     """
     Returns a list of all the guide payments for the guide with the given id that have been paid. 
     If no payments have been paid, returns a message indicating that there are no payments.
+
     """
 
     guide = CustomUser.objects.get(id = pk)
@@ -1120,6 +1121,20 @@ def guide_paid_payments(request, pk):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_chat_list(request, pk):
+
+    """
+    Get a list of all chats associated with a specific user, sorted by the latest message time.
+
+    Parameters:
+
+    request: The HTTP request object.
+    pk (int): The ID of the user to get the chats for.
+
+    Returns:
+
+    A Response object containing serialized Chat objects and HTTP status 200.
+
+    """
     user = CustomUser.objects.get(id = pk)
     chats = Chat.objects.filter(user = user).annotate(latest_message_time=Max('messages__created_at')).order_by('-latest_message_time')
     serializer = ChatSerializer(chats, many=True)
@@ -1128,6 +1143,20 @@ def user_chat_list(request, pk):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_chat_guide(request, pk):
+
+    """
+    Get details for a specific chat between a user and a guide.
+
+    Parameters:
+
+    request: The HTTP request object.
+    pk (int): The ID of the chat to get the details for.
+
+    Returns:
+
+    A Response object containing serialized Chat object and HTTP status 200.
+
+    """
     chat = Chat.objects.get(id = pk)
     serializer = ChatSerializer(chat)
     return Response(serializer.data, status = status.HTTP_200_OK)
@@ -1135,6 +1164,20 @@ def user_chat_guide(request, pk):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def guide_chat_list(request, pk):
+
+    """
+    Get a list of all chats associated with a specific guide, sorted by the latest message time.
+
+    Parameters:
+
+    request: The HTTP request object.
+    pk (int): The ID of the guide to get the chats for.
+
+    Returns:
+
+    A Response object containing serialized Chat objects and HTTP status 200.
+
+    """
     guide = CustomUser.objects.get(id = pk)
     chats = Chat.objects.filter(guide = guide).annotate(latest_message_time=Max('messages__created_at')).order_by('-latest_message_time')
     serializer = ChatSerializer(chats, many=True)
@@ -1142,6 +1185,22 @@ def guide_chat_list(request, pk):
 
 @api_view(['POST'])
 def create_or_start_chat(request):
+
+    """
+    Create a new chat between a user and a guide, or return an existing chat if one already exists.
+
+    Parameters:
+
+    request: The HTTP request object.
+    userId (int): The ID of the user for the chat.
+    guideId (int): The ID of the guide for the chat.
+
+    Returns:
+
+    A Response object containing serialized Chat object and HTTP status 200.
+
+    """
+
     userId = request.data.get('userId')
     guideId = request.data.get('guideId')
     
@@ -1153,8 +1212,22 @@ def create_or_start_chat(request):
     return Response(serializer.data, status = status.HTTP_200_OK)
 
 @api_view(['GET'])
-# @permission_classes([IsAdminUser])
+@permission_classes([IsAdminUser])
 def dashboard_payments_details(request):
+
+    """
+    Get summary details for all payments.
+
+    Parameters:
+
+    request: The HTTP request object.
+
+    Returns:
+
+    A Response object containing a dictionary of summary details and HTTP status 200.
+
+    """
+
     payments = Payment.objects.all()
     summary = PaymentDetailSerializer.get_summary(payments)
     data = {'summary': summary}
@@ -1164,6 +1237,20 @@ def dashboard_payments_details(request):
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def dashboard_count_details(request):
+
+    """
+    Get count details for destinations, guides, bookings, canceled bookings, and payments.
+
+    Parameters:
+
+    request: The HTTP request object.
+
+    Returns:
+
+    A Response object containing serialized Stats object and HTTP status 200.
+
+    """
+
     total_destinations = Destination.objects.count()
     total_guides = CustomUser.objects.filter(is_guide=True).count()
     total_bookings = Booking.objects.filter(is_booked=True, is_declined=False).count()
@@ -1188,12 +1275,40 @@ def dashboard_count_details(request):
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
 def revenue_chart(request):
+
+    """
+    Get daily revenue details for a specified date range.
+
+    Parameters:
+
+    request: The HTTP request object.
+
+    Returns:
+
+    A Response object containing a dictionary of daily revenue details and HTTP status 200.
+
+    """
+
     data = request.data.get('range')
     daily_revenue = Payment.get_revenue_details(data)
     return Response(daily_revenue)
 
 @api_view(['Get'])
 def get_destination_search(request):
+
+    """
+    Get a list of all destinations, serialized for search results.
+
+    Parameters:
+
+    request: The HTTP request object.
+
+    Returns:
+
+    A Response object containing serialized DestinationSearch objects and HTTP status 200.
+
+    """
+    
     destinations = Destination.objects.all()
     destinations = DestinationSearchSerializer(destinations,many=True)
     return Response(destinations.data, status = status.HTTP_200_OK)

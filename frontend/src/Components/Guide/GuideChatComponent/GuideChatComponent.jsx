@@ -48,7 +48,7 @@ function GuideChatComponent() {
 
     useEffect(() => {
         if(url){
-        const user_authTokens = JSON.parse(localStorage.getItem('user_authTokens'))
+        const user_authTokens = JSON.parse(localStorage.getItem('guide_authTokens'))
         const access = user_authTokens?.access
         
         axios.get(url, {

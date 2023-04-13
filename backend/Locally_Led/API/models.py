@@ -60,6 +60,7 @@ class Payment(models.Model):
     booking = models.OneToOneField(Booking, on_delete=models.CASCADE, related_name='payment')
     is_refunded = models.BooleanField(default=False)
     method = models.CharField(max_length=100)
+    date = models.DateField(auto_now_add=True)
 
     @classmethod
     def get_revenue_details(cls, requested_data):
@@ -68,8 +69,8 @@ class Payment(models.Model):
             dates = [today - timedelta(days=i) for i in range(7)]
             revenue = []
             for d in dates:
-                bookings = Booking.objects.filter(date=d, payment__is_refunded=False)
-                revenue.append('{:.2f}'.format(sum([b.destination.fee for b in bookings])))
+                payments = Payment.objects.filter(date=d, is_refunded=False)
+                revenue.append('{:.2f}'.format(sum([b.booking.destination.fee for b in payments])))
             dates = [d.strftime('%d-%m') for d in dates]
             return {'lable': dates, 'revenue': revenue}
         elif requested_data == 'monthly':
@@ -81,8 +82,8 @@ class Payment(models.Model):
                 start_date = date(today.year, i+1, 1)
                 # Get the last day of the month
                 end_date = date(today.year, i+1, monthrange(today.year, i+1)[1])
-                bookings = Booking.objects.filter(date__range=[start_date, end_date], payment__is_refunded=False)
-                revenue.append('{:.2f}'.format(sum([b.destination.fee for b in bookings])))
+                payments = Payment.objects.filter(date__range=[start_date, end_date], is_refunded=False)
+                revenue.append('{:.2f}'.format(sum([b.booking.destination.fee for b in payments])))
                 # Get the name of the month
                 month_name = start_date.strftime('%b')
                 months.append(month_name)
