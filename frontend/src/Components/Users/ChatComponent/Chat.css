@@ -408,6 +408,10 @@
     height: 56px;
 }
 
+.chat-window-input-textarea:focus{
+    outline: none!important;
+}
+
 .chat-send-button{
     padding: 0 1rem;
     transition: background-color .13s ease-in;

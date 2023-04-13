@@ -44,12 +44,16 @@ class CustomUserSerializer(serializers.ModelSerializer):
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.email = validated_data.get('email', instance.email)
-        instance.bio = validated_data.get('bio', instance.bio)
+        # instance.bio = validated_data.get('bio', instance.bio)
         instance.phone = validated_data.get('phone', instance.phone)
 
         image = validated_data.get('image', None)
         if image is not None:
             instance.image = image
+
+        bio = validated_data.get('bio', None)
+        if bio is not None:
+            instance.bio = bio
         
         instance.save()
 

@@ -28,12 +28,7 @@ import AdminBookings from './Pages/Admin/Bookings/AdminBookings';
 import Payments from './Pages/Admin/Payments/Payments';
 import Payment from './Pages/Guides/Payment/Payment';
 import GuideChat from './Pages/Guides/Chat/GuideChat';
-// import StripeCheckout from './Components/Users/PaymentComponent/StripeCheckout';
-
-
-
-
-
+import Profile from './Pages/Users/Profile/Profile';
 
 
 function App() {
@@ -67,10 +62,10 @@ function App() {
          <Route path="/destination/:destinationId" element={<Destination/>} />
          <Route path="/guide/:guideId" element={<Guide/>} />
          <Route path="/checkout" element={<Checkout/>} />
-         {/* <Route path="/checkout/stripe" element={<StripeCheckout/>} /> */}
          <Route path="/chat" element={<Chat/>} />
          <Route path="/chat/:chatId" element={<Chat/>} />
          <Route path="/bookings" element={<AllBookings/>} />
+         <Route path="/profile" element={<Profile/>} />
 
          {/* <------- Guide Routes -------> */}
 

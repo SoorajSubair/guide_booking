@@ -6,7 +6,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/esm/Button';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../../Utils/axios'
-import { verifyToken,baseUrl } from '../../../Utils/Urls';
+import { verifyToken,baseUrl,getGuide } from '../../../Utils/Urls';
 import jwt_decode from "jwt-decode";
 import { useDispatch } from 'react-redux';
 import { change } from "../../../Redux/authenticationSlice";
@@ -17,7 +17,7 @@ import { useSelector } from 'react-redux';
 import { UserIsLoggedIn } from '../../../Context/UserIsLoggedIn';
 
 
-function NavBar() {
+function NavBar(props) {
 
     const { image } = useSelector(state => state.user);
     const profileImage = `${baseUrl}${image}`
@@ -53,7 +53,16 @@ function NavBar() {
                       localStorage.setItem("user_prevUrl", window.location.pathname);
                       const access = user_authTokens?.access
                       const decodedToken = jwt_decode(access)
-                      dispatch(change({ id: decodedToken.user_id ,username: decodedToken.username, image: decodedToken.image }));
+                      dispatch(change({id: decodedToken.user_id}));
+                      const url = `${getGuide}${decodedToken.user_id}`;
+                      axios.get(url, {
+                        headers: { 'Content-Type': 'application/json' },
+                      })
+                      .then((response) => {
+                        if (response.status === 200) {
+                            dispatch(change({id:decodedToken.user_id, username: response.data.username, image: response.data.image }));
+                        }
+                      });
                       setIsLoggedIn(true)
                   }
                 })
@@ -75,7 +84,7 @@ function NavBar() {
                 navigate('/login')
               }
             }
-    },[dispatch])
+    },[dispatch, props.update])
   
   
     useEffect(() => {
@@ -119,7 +128,7 @@ function NavBar() {
           // </Navbar.Text >
           <Navbar.Brand id="basic-nav-dropdown" ><img src={profileImage} alt='logo' style={{height:'50px', width:'50px', borderRadius:'50%', objectFit:'cover'}}></img>
           <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item>Profile</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate('/profile')}>Profile</NavDropdown.Item>
               <NavDropdown.Item onClick={() => navigate('/bookings')}>Bookings</NavDropdown.Item>
               <NavDropdown.Item onClick={() => navigate('/chat')}>Chat</NavDropdown.Item>
               <NavDropdown.Divider />

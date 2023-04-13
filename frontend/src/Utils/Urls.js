@@ -18,6 +18,7 @@ export const getTop5MegaCity = "/api/get_top5MegaCity/";
 export const getTop5NatureFriendly = "/api/get_top5NatureFriendly/";
 export const getGuide = "/api/get_guide/";
 export const updateGuide = "/api/update_guide/";
+export const updateUser = "/api/update_user/";
 export const draftBooking = "/api/draft_booking/";
 export const getBooking = "/api/get_booking/";
 export const paymentConfirmed = "/api/payment_confirmed/";

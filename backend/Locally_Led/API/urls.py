@@ -17,6 +17,7 @@ urlpatterns = [
     path('get_guides/', get_guides, name='get_guides'),
     path('get_guide/<int:pk>', get_guide, name='get_guide'),
     path('update_guide/<int:pk>', update_guide, name='update_guide'),
+    path('update_user/<int:pk>', update_user, name='update_user'),
     path('create_destination/', create_destination, name='create_destination'),
     path('get_destinations/', get_destinations, name='get_destinations'),
     path('get_top5MegaCity/', get_top5MegaCity, name='get_top5MegaCity'),

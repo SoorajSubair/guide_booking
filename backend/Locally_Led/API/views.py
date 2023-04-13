@@ -404,6 +404,33 @@ def update_guide(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_user(request, pk):
+
+    """
+    Update a users's information.
+
+    Args:
+        request: The HTTP request object.
+        pk (int): The ID of the guide to update.
+
+    Returns:
+        Response: A response object indicating whether the update operation was successful.
+    """
+
+    try:
+        user = CustomUser.objects.get(pk=pk)
+    except CustomUser.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+   
+    serializer = CustomUserSerializer(user, data=request.data, partial=True)
+    if serializer.is_valid():
+        user = serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['GET'])
 def guide_booking_dates(request, pk):
 
