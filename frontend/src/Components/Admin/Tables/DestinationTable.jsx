@@ -136,7 +136,7 @@ export default function DestinationTable() {
 
     return (
         <div className="card">
-            <DataTable value={customers} paginator rows={7} dataKey="id" filters={filters} filterDisplay="row" loading={loading}
+            <DataTable value={customers} paginator rows={5} dataKey="id" filters={filters} filterDisplay="row" loading={loading}
                     globalFilterFields={['name', 'country', 'guide_count']} header={header} emptyMessage="No customers found.">
                 <Column field="name" header="Destination" filter filterPlaceholder="Search by destination" style={{ minWidth: '12rem' }} />
                 <Column field="country" header="Country" filter filterPlaceholder="Search by country" style={{ minWidth: '12rem' }} />

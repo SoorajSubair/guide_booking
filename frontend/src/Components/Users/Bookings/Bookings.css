@@ -139,3 +139,54 @@
 .pi-times-circle{
     color: red;
 }
+
+.star-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.comment-heading{
+    border: 1px solid #a9a9a9;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 20px 0;
+    height: 50px;
+    width: 500px;
+    display: block;
+}
+@media (max-width: 580px){
+    .comment-heading {
+        width: 300px;
+    }
+    }
+
+
+.comment-box{
+    border: 1px solid #a9a9a9;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 20px 0;
+    min-height: 100px;
+    width: 500px;
+}
+
+@media (max-width: 580px){
+    .comment-box {
+        width: 300px;
+    }
+    }
+
+.comment-submit-button{
+    background-color: #e71575;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    width: -webkit-fill-available;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0px;
+}

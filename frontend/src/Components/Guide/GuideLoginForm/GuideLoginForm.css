@@ -57,6 +57,7 @@
     border: none;
     cursor: pointer;
     width: -webkit-fill-available;
+    height: 50px;
   }
 
   .error-message{

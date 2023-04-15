@@ -259,7 +259,7 @@ export default function GuideSchedulesTable() {
         </>
         :
         <div className="guide-schedule-card">
-            <DataTable value={customers} paginator rows={7} dataKey="id" filters={filters} filterDisplay="row" loading={loading}
+            <DataTable value={customers} paginator rows={5} dataKey="id" filters={filters} filterDisplay="row" loading={loading}
                     globalFilterFields={['user.first_name','user.last_name', 'date', 'destination.name', 'destination.country']} header={header} emptyMessage="No data found.">
                 <Column header="Tourist" style={{ minWidth: '12rem'}} body={representativeBodyTemplate}/>
                 <Column field="date" header="Date" style={{ minWidth: '6rem' }} body={rowData => formatDate(rowData.date)}/>

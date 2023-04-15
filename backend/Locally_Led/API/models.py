@@ -55,6 +55,12 @@ class Booking(models.Model):
     is_start_code = models.CharField(max_length=6,null=True,blank=True)
     is_end_code = models.CharField(max_length=6,null=True,blank=True)
 
+class Comment(models.Model):
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    rating = models.IntegerField(default=0)
+    comment = models.TextField(null =True, blank=True)
+
 
 class Payment(models.Model):
     booking = models.OneToOneField(Booking, on_delete=models.CASCADE, related_name='payment')

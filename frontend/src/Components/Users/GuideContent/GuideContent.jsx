@@ -4,6 +4,7 @@ import TourPersonaliseCard from '../TourPersonaliseCard/TourPersonaliseCard'
 import Services from '../Services/Services'
 import { baseUrl } from '../../../Utils/Urls'
 import { useGuide } from '../../../Context/GuideContext'
+import CommentsComponent from '../CommentsComponent/CommentsComponent'
 
 function GuideContent() {
 
@@ -28,6 +29,7 @@ function GuideContent() {
         </div>
         <Services/>
         <TourPersonaliseCard/>
+        <CommentsComponent commentsFor={'guide'}/>
       
     </div>
   )

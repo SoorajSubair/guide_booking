@@ -23,6 +23,7 @@ function ProfileComponent(props) {
     const [phone, setPhone] = useState('');
     const [wallet, setwallet] = useState('');
     const [userImage, setImage] = useState(null)
+    const [updateClicked, setUpdateClicked] = useState(false)
     
     const [validated, setValidated] = useState(false);
     const phonePrefix = "+91"
@@ -121,18 +122,18 @@ function ProfileComponent(props) {
     <div className='profile-container'>
         <div className="booking-master">
             <div className="bookings-header">
-                {!props.update ?
+                {!updateClicked ?
                 <>
                 <h3 class="Title-MBBEe">PROFILE</h3>
-                <span class="Action-24rBX" onClick={()=>props.setUpdate(!props.update)}>Update</span>
+                <span class="Action-24rBX" onClick={()=>setUpdateClicked(!updateClicked)}>Update</span>
                 </>:
                 <>
                 <h3 class="Title-MBBEe">UPDATE FORM</h3>
-                <span class="Action-24rBX" onClick={()=>props.setUpdate(!props.update)}>Cancel</span>
+                <span class="Action-24rBX" onClick={()=>setUpdateClicked(!updateClicked)}>Cancel</span>
                 </>
                 }
             </div>
-            {!props.update ?
+            {!updateClicked ?
             <div class="profile-scroller">
                 <div class="Container-3OyhV">
                     <img alt="profile photo" height="200" width="200" sizes="200px" class="Avatar-2iH7z img-responsive" src={profileImage}/>
@@ -144,11 +145,11 @@ function ProfileComponent(props) {
                 </div>
                 <div className='profile-details-container'>
                         <span><strong>Email :</strong> {email}</span>
-                        <span><strong>PHONE :</strong> {phone}</span>
+                        <span><strong>Phone :</strong> {phone}</span>
                 </div>
                 <div className='profile-details-container'>
-                        <span><strong>USERNAME :</strong> {username}</span>
-                        <span><strong>WALLET :</strong> $ {wallet}</span>
+                        <span><strong>Username :</strong> {username}</span>
+                        <span><strong>Wallet :</strong> $ {wallet}</span>
                 </div>
                 </div>
             </div>

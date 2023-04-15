@@ -7,6 +7,7 @@ import GuideContent from '../../../Components/Users/GuideContent/GuideContent'
 import NavBar from '../../../Components/Users/Navbar/Navbar'
 import { GuideProvider } from '../../../Context/GuideContext'
 import './Guide.css'
+import CommentsComponent from '../../../Components/Users/CommentsComponent/CommentsComponent'
 
 function Guide() {
   return (

@@ -220,3 +220,9 @@ class DestinationSearchSerializer(serializers.ModelSerializer):
         model = Destination
         fields = ['id', 'name', 'country']
 
+class CommentGetSerializer(serializers.ModelSerializer):
+    booking = BookingGetSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ['id', 'booking', 'rating','comment','date' ]

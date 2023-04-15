@@ -1320,7 +1320,7 @@ def revenue_chart(request):
     daily_revenue = Payment.get_revenue_details(data)
     return Response(daily_revenue)
 
-@api_view(['Get'])
+@api_view(['GET'])
 def get_destination_search(request):
 
     """
@@ -1339,6 +1339,24 @@ def get_destination_search(request):
     destinations = Destination.objects.all()
     destinations = DestinationSearchSerializer(destinations,many=True)
     return Response(destinations.data, status = status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def get_destination_comments(request, pk):
+
+    comments_for = request.data.get('commentsFor')
+    if comments_for == 'destination':
+        bookings = Booking.objects.filter(destination_id=pk)
+    if comments_for == 'guide':
+        bookings = Booking.objects.filter(guide_id=pk)
+    for booking in bookings:
+        booking_comments = Comment.objects.filter(booking=booking).order_by('-rating')
+        serializer = CommentGetSerializer(booking_comments, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+        
+   
+
+
 
 
 

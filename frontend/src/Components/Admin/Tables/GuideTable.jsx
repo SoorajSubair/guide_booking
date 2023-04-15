@@ -237,7 +237,7 @@ export default function GuideTable() {
 
     return (
         <div className="card">
-            <DataTable value={customers} paginator rows={7} dataKey="id" filters={filters} filterDisplay="row" loading={loading}
+            <DataTable value={customers} paginator rows={5} dataKey="id" filters={filters} filterDisplay="row" loading={loading}
                     globalFilterFields={['username','first_name','lastname', 'email','phone', 'destination.name']} header={header} emptyMessage="No customers found.">
                 <Column header="Guide" filterField="username" style={{ minWidth: '12rem'}} body={representativeBodyTemplate} filter filterPlaceholder="Search by username"/>
                 <Column field="email" header="Email" filter filterPlaceholder="Search by email" style={{ minWidth: '12rem' }} />

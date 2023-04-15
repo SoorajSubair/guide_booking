@@ -15,6 +15,7 @@ import { destinationDelete, getUserAllbookings,getUserCancelledbookings,getUserC
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { FaStar } from "react-icons/fa";
 
 
 function Bookings() {
@@ -33,6 +34,14 @@ function Bookings() {
     });
     const user_authTokens = JSON.parse(localStorage.getItem('user_authTokens'))
     const access = user_authTokens?.access
+    const stars = Array(5).fill(0)
+    const [currentStarValue, setCurrentStarValue] = useState(0);
+    const [hoverStarValue, setHoverStarValue] = useState(undefined);
+    const colors = {
+        pink: "#e71575",
+        grey: "#a9a9a9"
+        
+    };
 
 
     useEffect(()=>{
@@ -116,7 +125,7 @@ function Bookings() {
         setCode(null);
     }
 
-    const viewBodyTemplate = (rowData) => {
+        const viewBodyTemplate = (rowData) => {
         const startCode = rowData.is_start_code;
         const endCode = rowData.is_end_code;
         const tripStarted = rowData.trip_started;
@@ -136,6 +145,27 @@ function Bookings() {
                 </div>
             )}
             </>
+        )
+    }
+
+    const [commentId, setCommentId] = useState(null);
+    const showCommentDialog = (tripId) => {
+        setCommentId(tripId);
+    }
+    const hideCommentDialog = () => {
+        setCommentId(null);
+        setCurrentStarValue(0)
+        setHoverStarValue(undefined)
+    }
+
+    const CommentBodyTemplate = (rowData) => {
+        const tripId = rowData.id;
+        
+        return (
+        
+            <div className="flex align-items-center gap-2" style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
+            <button className="code-button" onClick={() => showCommentDialog(tripId)}>Rate</button>
+            </div>
         )
     }
 
@@ -215,6 +245,19 @@ function Bookings() {
         }
     }
 
+    const handleStarClick = value => {
+        setCurrentStarValue(value)
+      }
+    
+      const handleStarMouseOver = newHoverValue => {
+        setHoverStarValue(newHoverValue)
+      };
+    
+      const handleStarMouseLeave = () => {
+        setHoverStarValue(undefined)
+      }
+    
+
 
   return (
     <div className='booking-container'>
@@ -266,6 +309,9 @@ function Bookings() {
                         {bookingType === 'Bookings' &&
                         <Column header=""  style={{ minWidth: '7rem' }} body={viewBodyTemplate} />
                         }
+                        {bookingType === 'Completed Bookings' &&
+                        <Column header=""  style={{ minWidth: '7rem' }} body={CommentBodyTemplate} />
+                        }
                         {bookingType === 'Bookings' &&
                         <Column header=""  style={{ minWidth: '7rem' }} body={deleteBodyTemplate} />
                         }
@@ -274,6 +320,31 @@ function Bookings() {
                     <Dialog visible={code !== null} onHide={hideDialog}>
                         <p>Don't share this code to the guide unnecessarily!</p>
                         <strong style={{display:'flex', justifyContent:'center'}}>{code}</strong>
+                    </Dialog>
+
+                    <Dialog visible={commentId !== null} onHide={hideCommentDialog}>
+                        <p style={{display:"flex", justifyContent:"center"}}>Rate your trip</p>
+                            <div className='star-container'>
+                                {stars.map((_, index) => {
+                                return (
+                                    <FaStar
+                                    key={index}
+                                    size={24}
+                                    onClick={() => handleStarClick(index + 1)}
+                                    onMouseOver={() => handleStarMouseOver(index + 1)}
+                                    onMouseLeave={handleStarMouseLeave}
+                                    color={(hoverStarValue || currentStarValue) > index ? colors.pink : colors.grey}
+                                    style={{
+                                        marginRight: 10,
+                                        cursor: "pointer"
+                                    }}
+                                    />
+                                )
+                                })}
+                            </div>
+                        {/* <textarea className='comment-heading' placeholder="What's your experience?"/>  */}
+                        <textarea className='comment-box' placeholder="What's your experience?"/>
+                        <button className='comment-submit-button'>Submit</button>
                     </Dialog>
                 </div>
                 }

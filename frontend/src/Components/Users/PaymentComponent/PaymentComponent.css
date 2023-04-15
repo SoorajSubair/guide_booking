@@ -114,6 +114,8 @@
     font-weight: 600;
     color: #4a4a4a;
     padding-bottom: 1rem;
+    display: flex;
+    justify-content: center;
 }
 
 .SecureMessage-1Y4KG {
@@ -121,6 +123,7 @@
     align-items: flex-start;
     font-size: 1rem;
     line-height: 1.5rem;
+    justify-content: center;
 }
 
 .LockIcon-3H3-i {
@@ -128,12 +131,22 @@
     margin-right: 0.5rem;
     margin-top: 1px;
 }
+.paypal-button-container{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
 
 .paypal-button-number-1{
     display: none!important;
 }
 
-.stripe-button{
+.razorpay-button-container{
+    display: flex;
+    justify-content: center;
+}
+
+.razorpay-button{
     font-weight: 900;
     font-size: larger;
     min-width: 150px;
@@ -145,5 +158,6 @@
     max-height: 55px;
     background-color: rgb(49 91 193)!important;
 }
-.stripe-button:hover{
+.razorpay-button:hover{
     background-color: rgb(41, 85, 194)!important;}
+

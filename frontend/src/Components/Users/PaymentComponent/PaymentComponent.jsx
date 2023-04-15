@@ -33,7 +33,6 @@ function PaymentComponent() {
           })
             .then((response) => {
               if (response.status === 200) {
-                console.log(response.data)
                 setBooking(response.data)
                 setAmount(response.data.destination.fee)
                 setPaymentUrl(paymentConfirmed+response.data.id)
@@ -41,24 +40,6 @@ function PaymentComponent() {
             })
         }
     },[url])
-
-    // useEffect(() => {
-	// 	// Check to see if this is a redirect back from Checkout
-	// 	// const query = new URLSearchParams(window.location.search);
-	// 	const values = QueryString.parse(location.search);
-
-	// 	if (values.success) {
-	// 		console.log(
-	// 			'Order placed! You will receive an email confirmation.'
-	// 		);
-	// 	}
-
-	// 	if (values.canceled) {
-	// 		console.log(
-	// 			"Order canceled -- continue to shop around and checkout when you're ready."
-	// 		);
-	// 	}
-	// }, []);
 
 
 // this function will handel payment when user submit his/her money
@@ -201,7 +182,7 @@ function PaymentComponent() {
                 </p>
                 <PayPalScriptProvider options={{"client-id":"AaZE31xv7HEfxaZNd1L36B_bJBJYgNh4yHBMCU7wKEh4EtvzOEnim1w5Q72uMcBTxvWG1BSdm9qY3p5e"}}>
                 <PayPalButtons
-                    className="mt-3"
+                    className="mt-3 paypal-button-container"
                     style={{
                         layout: 'horizontal', // or 'vertical'
                         color: 'gold', // 'gold', 'blue', 'silver', or 'black'
@@ -249,12 +230,9 @@ function PaymentComponent() {
                     }}
                 />
                 </PayPalScriptProvider>
-                <button className='stripe-button' onClick={showRazorpay}>RazorPay</button>
-                {/* <form style={{marginTop:'0vh'}} action={`${baseUrl}${stripeCheckout}`}
-				method='POST' >
-				<button className='stripe-button' type='submit'>Stripe</button>
-			    </form> */}
-                
+                <div className='razorpay-button-container'>
+                <button className='razorpay-button' onClick={showRazorpay}>RazorPay</button>
+                </div>
             </div>
         </div>
         </div>

@@ -57,3 +57,4 @@ export const getAllPayments = "/api/dashboard_payments_details/";
 export const getAllStats = "/api/dashboard_count_details/";
 export const getRevenue = "/api/revenue_chart/";
 export const getDestinationSearch = "/api/get_destination_search/";
+export const getDestinationComments = "/api/get_destination_comments/";

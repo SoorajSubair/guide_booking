@@ -6,6 +6,7 @@ import Footer from '../../../Components/Users/Footer/Footer'
 import GuidesSlider from '../../../Components/Users/GuidesSlider/GuidesSlider'
 import NavBar from '../../../Components/Users/Navbar/Navbar'
 import { DestinationProvider } from '../../../Context/DestinationContext'
+import CommentsComponent from '../../../Components/Users/CommentsComponent/CommentsComponent'
 
 function Destination() {
   return (
@@ -16,6 +17,7 @@ function Destination() {
         <AboutDestination/>
         <Certification/>
         <GuidesSlider/>
+        <CommentsComponent commentsFor={'destination'}/>
         </DestinationProvider>
         <Footer/>
       

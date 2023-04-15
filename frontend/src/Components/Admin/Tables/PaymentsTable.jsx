@@ -221,7 +221,7 @@ export default function PaymentsTable() {
         </>
         :
         <div className="card">
-            <DataTable value={customers} paginator rows={7} dataKey="id" filters={filters} filterDisplay="row" loading={loading}
+            <DataTable value={customers} paginator rows={5} dataKey="id" filters={filters} filterDisplay="row" loading={loading}
                     globalFilterFields={['booking.user.first_name','booking.user.last_name','booking.guide.first_name','booking.guide.last_name', 'booking.destination.name', 'booking.destination.country', 'booking.destination.fee',"amount", 'method']} header={header} emptyMessage="No bookings found.">
                 {paymentType === 'recieved' || paymentType === 'refunded' || paymentType === 'pending refunds' ?
                 <Column header="User" filterField="booking.user.first_name" style={{ minWidth: '12rem'}} body={userBodyTemplate} filter filterPlaceholder="Search by user"/>

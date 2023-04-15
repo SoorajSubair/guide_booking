@@ -249,7 +249,7 @@ export default function GuidePaymentTable() {
         </>
         :
         <div className="guide-schedule-card">
-            <DataTable value={customers} paginator rows={7} dataKey="id" filters={filters} filterDisplay="row" loading={loading}
+            <DataTable value={customers} paginator rows={5} dataKey="id" filters={filters} filterDisplay="row" loading={loading}
                     globalFilterFields={['booking.user.first_name','booking.user.last_name','booking.destination.name', 'amount']} header={header} emptyMessage="No data found.">
                 <Column header="Tourist" style={{ minWidth: '12rem'}} body={representativeBodyTemplate}/>
                 <Column field="booking.destination.name" header="Destination" style={{ minWidth: '12rem' }} />

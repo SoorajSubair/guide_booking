@@ -173,7 +173,7 @@ export default function BookingsTable() {
         </>
         :
         <div className="card">
-            <DataTable value={customers} paginator rows={7} dataKey="id" filters={filters} filterDisplay="row" loading={loading}
+            <DataTable value={customers} paginator rows={5} dataKey="id" filters={filters} filterDisplay="row" loading={loading}
                     globalFilterFields={['user.first_name','user.last_name','guide.first_name','guide.last_name', 'destination.country', 'destination.name']} header={header} emptyMessage="No bookings found.">
                 <Column header="User" filterField="user.first_name" style={{ minWidth: '12rem'}} body={userBodyTemplate} filter filterPlaceholder="Search by user"/>
                 <Column header="Guide" filterField="guide.first_name" style={{ minWidth: '12rem'}} body={guideBodyTemplate} filter filterPlaceholder="Search by guide"/>
