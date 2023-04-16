@@ -62,6 +62,7 @@ urlpatterns = [
     path('revenue_chart/',revenue_chart, name = 'revenue_chart'),
     path('get_destination_search/',get_destination_search, name = 'get_destination_search'),
     path('get_destination_comments/<int:pk>',get_destination_comments, name = 'get_destination_comments'),
+    path('create_comment/<int:pk>',create_comment, name = 'create_comment'),
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/verify/', TokenVerifyView.as_view()),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

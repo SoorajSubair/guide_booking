@@ -11,9 +11,9 @@ import { Dialog } from 'primereact/dialog';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import axios from '../../../Utils/axios'
-import { destinationDelete, getUserAllbookings,getUserCancelledbookings,getUserCompletedbookings,cancelBooking } from "../../../Utils/Urls";
+import { createComment, getUserAllbookings,getUserCancelledbookings,getUserCompletedbookings,cancelBooking, createOrStartChat } from "../../../Utils/Urls";
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FaStar } from "react-icons/fa";
 
@@ -34,8 +34,10 @@ function Bookings() {
     });
     const user_authTokens = JSON.parse(localStorage.getItem('user_authTokens'))
     const access = user_authTokens?.access
+    const navigate = useNavigate();
     const stars = Array(5).fill(0)
     const [currentStarValue, setCurrentStarValue] = useState(0);
+    const [comment, setComment] = useState('');
     const [hoverStarValue, setHoverStarValue] = useState(undefined);
     const colors = {
         pink: "#e71575",
@@ -148,6 +150,8 @@ function Bookings() {
         )
     }
 
+
+
     const [commentId, setCommentId] = useState(null);
     const showCommentDialog = (tripId) => {
         setCommentId(tripId);
@@ -156,6 +160,7 @@ function Bookings() {
         setCommentId(null);
         setCurrentStarValue(0)
         setHoverStarValue(undefined)
+        setComment('')
     }
 
     const CommentBodyTemplate = (rowData) => {
@@ -167,6 +172,35 @@ function Bookings() {
             <button className="code-button" onClick={() => showCommentDialog(tripId)}>Rate</button>
             </div>
         )
+    }
+
+    const ChatBodyTemplate = (rowData) => {
+        const userId = rowData.user.id;
+        const guideId = rowData.guide.id;
+        return (
+        
+            <div className="flex align-items-center gap-2" style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
+            <button className="chat-button" onClick={() =>handleChat(userId,guideId) }>Chat</button>
+            </div>
+        )
+    }
+
+    const handleChat = (userId, guideId) =>{
+        const data = {
+            userId,
+            guideId
+        }
+
+        axios.post(createOrStartChat, data, {
+            headers: {'Content-Type': 'multipart/form-data' },
+        })
+        .then((response) => {
+            navigate(`/chat/${response.data.id}`)
+        })
+        .catch((e) =>{
+            console.log(e.response.data)
+        })
+
     }
 
 
@@ -207,6 +241,7 @@ function Bookings() {
 
           }
         });
+        
       };
 
 
@@ -257,6 +292,58 @@ function Bookings() {
         setHoverStarValue(undefined)
       }
     
+    const handleCommentSubmit = (commentId) =>{
+        const createCommentUrl = `${createComment}${commentId}`
+        const data = {
+            rating:currentStarValue,
+            comment:comment
+        }
+        axios.post(createCommentUrl, data,{
+            headers: {"Authorization": `Bearer ${access}`,'Content-Type': 'multipart/form-data' },
+        })
+        .then((response)=>{
+            if(response.status == 201){
+                setCommentId(null);
+                setCurrentStarValue(0)
+                setHoverStarValue(undefined)
+                setComment('')
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Thank you for your feedback",
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+            }
+            else{
+                setCommentId(null);
+                setCurrentStarValue(0)
+                setHoverStarValue(undefined)
+                setComment('')
+                Swal.fire({
+                    position: "center",
+                    icon: "warning",
+                    title: "Sorry, something went wrong",
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+            }
+        })
+        .catch((error)=>{
+            setCommentId(null);
+            setCurrentStarValue(0)
+            setHoverStarValue(undefined)
+            setComment('')
+            Swal.fire({
+                position: "center",
+                icon: "warning",
+                title: "Sorry, something went wrong",
+                showConfirmButton: false,
+                timer: 2000,
+              });
+        })
+
+    }
 
 
   return (
@@ -309,6 +396,9 @@ function Bookings() {
                         {bookingType === 'Bookings' &&
                         <Column header=""  style={{ minWidth: '7rem' }} body={viewBodyTemplate} />
                         }
+                        {bookingType === 'Bookings' &&
+                        <Column header=""  style={{ minWidth: '7rem' }} body={ChatBodyTemplate} />
+                        }
                         {bookingType === 'Completed Bookings' &&
                         <Column header=""  style={{ minWidth: '7rem' }} body={CommentBodyTemplate} />
                         }
@@ -342,9 +432,8 @@ function Bookings() {
                                 )
                                 })}
                             </div>
-                        {/* <textarea className='comment-heading' placeholder="What's your experience?"/>  */}
-                        <textarea className='comment-box' placeholder="What's your experience?"/>
-                        <button className='comment-submit-button'>Submit</button>
+                        <textarea className='comment-box' value={comment} onChange={(e)=>setComment(e.target.value)} placeholder="What's your experience?"/>
+                        <button className='comment-submit-button' onClick={()=>handleCommentSubmit(commentId)}>Submit</button>
                     </Dialog>
                 </div>
                 }

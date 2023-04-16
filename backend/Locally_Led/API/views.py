@@ -1340,21 +1340,46 @@ def get_destination_search(request):
     destinations = DestinationSearchSerializer(destinations,many=True)
     return Response(destinations.data, status = status.HTTP_200_OK)
 
-
 @api_view(['POST'])
 def get_destination_comments(request, pk):
 
     comments_for = request.data.get('commentsFor')
     if comments_for == 'destination':
-        bookings = Booking.objects.filter(destination_id=pk)
+        bookings = Booking.objects.filter(destination_id=pk, trip_ended=True)
+        print(bookings)
     if comments_for == 'guide':
-        bookings = Booking.objects.filter(guide_id=pk)
+        bookings = Booking.objects.filter(guide_id=pk, trip_ended=True)
     for booking in bookings:
         booking_comments = Comment.objects.filter(booking=booking).order_by('-rating')
         serializer = CommentGetSerializer(booking_comments, many=True)
         return Response(serializer.data, status = status.HTTP_200_OK)
         
-   
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_comment(request, pk):
+    try:
+        booking = Booking.objects.get(id=pk)
+    except Booking.DoesNotExist:
+        return Response({'error': 'Booking does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    serializer = CommentSerializer(data=request.data)
+    if serializer.is_valid():
+        try:
+            comment = Comment.objects.get(booking=booking)
+            comment.rating = serializer.validated_data.get('rating')
+            comment.comment = serializer.validated_data.get('comment')
+            comment.save()
+        except:
+            comment = Comment.objects.create(
+                booking=booking,
+                rating=serializer.validated_data.get('rating'),
+                comment=serializer.validated_data.get('comment'),
+            )
+        return Response({'id': comment.id}, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 

@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from 'react'
 import './Comments.css'
 import { getDestinationComments,baseUrl } from '../../../Utils/Urls'
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../../Utils/axios';
 
 
@@ -20,6 +20,7 @@ function CommentsComponent(props) {
     const [commentsToShow, setCommentsToShow] = useState(4);
     const [additionalToShow, setAdditionalToShow] = useState(2);
     const commentsFor = props.commentsFor
+    const navigate = useNavigate()
 
     useEffect(() => {
         if(url){
@@ -32,6 +33,7 @@ function CommentsComponent(props) {
           })
           .then((response) => {
             if (response.status === 200) {
+                console.log(response.data)
               setComments(response.data);
             }
           });
@@ -68,7 +70,7 @@ function CommentsComponent(props) {
                                 <div className="review-details">
                                     <div className="GuestName"><span>{comment.booking.user.first_name}</span></div>
                                     <div className="About-QkGWM">
-                                        <span data-translatekey="Common.Review.aboutHost">About native <a className="LocalLink-2ABRd">{comment.booking.guide.first_name}</a></span>
+                                        <span data-translatekey="Common.Review.aboutHost">About native <a onClick={()=>navigate(`/guide/${comment.booking.guide.id}`)} className="LocalLink-2ABRd">{comment.booking.guide.first_name}</a></span>
                                     </div>
                                     <div>
                                         <div class="Rating-OD72C">

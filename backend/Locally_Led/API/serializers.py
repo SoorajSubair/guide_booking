@@ -226,3 +226,7 @@ class CommentGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'booking', 'rating','comment','date' ]
+
+class CommentSerializer(serializers.Serializer):
+    rating = serializers.IntegerField(min_value=0, max_value=5)
+    comment = serializers.CharField(allow_blank=True, required=False)
